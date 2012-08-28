@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>test</title>
+		<meta name="author" content="Fahim" />
+		<script type="text/javascript" src="lib/com/utensil/JSInterface.js"></script>
+		<script type="text/javascript" src="lib/com/wezside/display/DisplayObject.js"></script>
+		<script type="text/javascript" src="lib/com/wezside/component/UIElement.js"></script>
+		<!-- Date: 2012-08-28 -->
+		<style>
+			.box {
+				background-color: #f00;
+				width: 100px;
+				height: 100px;
+			}
+		</style>
+		<script type="text/javascript">
+			function onLoad() {
+				
+				
+				
+				
+				
+				var sprite = new UIElement();
+				sprite.build();
+				sprite.className("box");
+				sprite.x(100);
+				sprite.y(100);
+				sprite.width(200);
+				sprite.height(300);
+				sprite.visible(true);
+		
+				document.body.appendChild(sprite.display);
+				
+				var sprite2 = new UIElement();
+				sprite2.build();
+				sprite2.className("box");
+				sprite2.x(300);
+				sprite2.y(300);
+				sprite2.width(200);
+				sprite2.height(300);
+				sprite2.visible(true);
+		
+				document.body.appendChild(sprite2.display);
+			}
+		</script>
+	</head>
+	<body onload="onLoad()"></body>
+</html>
