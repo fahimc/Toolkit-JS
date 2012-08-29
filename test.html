@@ -31,17 +31,20 @@
 				sprite.width(200);
 				sprite.height(300);
 				sprite.visible(true);
+				sprite.alpha(0.7);
+				sprite.buttonMode(false);
 		
 				document.body.appendChild(sprite.display);
 				
 				var sprite2 = new UIElement();
 				sprite2.build();
 				sprite2.className("box");
-				sprite2.x(300);
+				sprite2.x(400);
 				sprite2.y(300);
 				sprite2.width(200);
 				sprite2.height(300);
 				sprite2.visible(true);
+				sprite2.buttonMode(true);
 		
 				document.body.appendChild(sprite2.display);
 			}
