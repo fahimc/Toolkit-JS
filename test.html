@@ -12,6 +12,8 @@
 		<script type="text/javascript" src="lib/com/wezside/decorator/Layout.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/display/DisplayObject.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/component/UIElement.js"></script>
+		<script type="text/javascript" src="lib/com/wezside/component/Label.js"></script>
+		<script type="text/javascript" src="src/com/view/View.js"></script>
 		<!-- Date: 2012-08-28 -->
 		<style>
 			.box {
@@ -19,10 +21,28 @@
 				width: 100px;
 				height: 100px;
 			}
+			.bg {
+				background-color: #000;
+				width: 100px;
+				height: 100px;
+			}
 			.box2 {
 				background-color: #0f0;
 				width: 100px;
 				height: 100px;
+			}
+			.box3 {
+				background-color: #00f;
+				width: 100px;
+				height: 100px;
+			}
+			.label
+			{
+				color:#ccc;
+				font-size: 20px;
+				border: 1px solid #FFF;
+				padding: 5px;
+				text-align: center;
 			}
 		</style>
 		<script type="text/javascript">
@@ -59,46 +79,33 @@
 				//ResourceManager.init();
 				
 				
-				var sprite = new UIElement();
-				sprite.build();
-				sprite.className("box");
-				sprite.layout = new VerticalLayout();
-				sprite.layout.verticalGap=30;
-				sprite.x(100);
-				sprite.y(100);
-				sprite.width(200);
-				sprite.height(300);
-				sprite.visible(true);
-				sprite.alpha(0.7);
-				sprite.buttonMode(false);
-		
-				document.body.appendChild(sprite.display);
+				var view = new View();
+				view.build();
+				view.className("box");
+				view.x(100);
+				view.y(100);
+				view.width(300);
+				view.height(300);
+				view.visible(true);
+				view.alpha(0.7);
+				view.buttonMode(false);
+				document.body.appendChild(view.display);
+				view.arrange();
 				
-				var sprite2 = new UIElement();
-				sprite2.build();
-				sprite2.className("box2");
-				sprite2.x(0);
-				sprite2.y(0);
-				sprite2.width(100);
-				sprite2.height(100);
-				sprite2.visible(true);
-				sprite2.buttonMode(true);
-		
-				sprite.addChild(sprite2);
+				var view2 = new View2();
+				view2.build();
+				view2.className("bg");
+				view2.x(410);
+				view2.y(100);
+				view2.width(520);
+				view2.height(200);
+				view2.visible(true);
+				view2.alpha(0.7);
+				view2.buttonMode(false);
+				document.body.appendChild(view2.display);
+				view2.arrange();
 				
-				var sprite3 = new UIElement();
-				sprite3.build();
-				sprite3.className("box2");
-				sprite3.x(0);
-				sprite3.y(0);
-				sprite3.width(100);
-				sprite3.height(100);
-				sprite3.visible(true);
-				sprite3.buttonMode(true);
-		
-				sprite.addChild(sprite3);
 				
-				sprite.arrange();
 			}
 			function onResourceComplete()
 			{
