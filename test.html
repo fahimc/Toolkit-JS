@@ -9,12 +9,18 @@
 		<script type="text/javascript" src="lib/com/utensil/UtensilLight.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/event/Event.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/util/manager/ResourceManager.js"></script>
+		<script type="text/javascript" src="lib/com/wezside/decorator/Layout.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/display/DisplayObject.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/component/UIElement.js"></script>
 		<!-- Date: 2012-08-28 -->
 		<style>
 			.box {
 				background-color: #f00;
+				width: 100px;
+				height: 100px;
+			}
+			.box2 {
+				background-color: #0f0;
 				width: 100px;
 				height: 100px;
 			}
@@ -50,12 +56,14 @@
 				
 				Event.addListener(ResourceManager,Event.COMPLETE,onResourceComplete);
 				
-				ResourceManager.init();
+				//ResourceManager.init();
 				
 				
 				var sprite = new UIElement();
 				sprite.build();
 				sprite.className("box");
+				sprite.layout = new VerticalLayout();
+				sprite.layout.verticalGap=30;
 				sprite.x(100);
 				sprite.y(100);
 				sprite.width(200);
@@ -68,15 +76,29 @@
 				
 				var sprite2 = new UIElement();
 				sprite2.build();
-				sprite2.className("box");
-				sprite2.x(400);
-				sprite2.y(300);
-				sprite2.width(200);
-				sprite2.height(300);
+				sprite2.className("box2");
+				sprite2.x(0);
+				sprite2.y(0);
+				sprite2.width(100);
+				sprite2.height(100);
 				sprite2.visible(true);
 				sprite2.buttonMode(true);
 		
-				document.body.appendChild(sprite2.display);
+				sprite.addChild(sprite2);
+				
+				var sprite3 = new UIElement();
+				sprite3.build();
+				sprite3.className("box2");
+				sprite3.x(0);
+				sprite3.y(0);
+				sprite3.width(100);
+				sprite3.height(100);
+				sprite3.visible(true);
+				sprite3.buttonMode(true);
+		
+				sprite.addChild(sprite3);
+				
+				sprite.arrange();
 			}
 			function onResourceComplete()
 			{
