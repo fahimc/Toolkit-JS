@@ -6,6 +6,9 @@
 		<title>test</title>
 		<meta name="author" content="Fahim" />
 		<script type="text/javascript" src="lib/com/utensil/JSInterface.js"></script>
+		<script type="text/javascript" src="lib/com/utensil/UtensilLight.js"></script>
+		<script type="text/javascript" src="lib/com/wezside/event/Event.js"></script>
+		<script type="text/javascript" src="lib/com/wezside/util/manager/ResourceManager.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/display/DisplayObject.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/component/UIElement.js"></script>
 		<!-- Date: 2012-08-28 -->
@@ -19,8 +22,35 @@
 		<script type="text/javascript">
 			function onLoad() {
 				
+				var assets =
+				{
+					logo:{
+						path:"resource/image/1.jpg"
+					},
+					bg:{
+						path:"resource/image/2.jpg",x:120,y:300,width:100,height:300
+					}
+				}
+				var assets2 =
+				{
+					logo2:{
+						path:"resource/image/1.jpg"
+					},
+					bg2:{
+						path:"resource/image/2.jpg",x:12,y:30,width:100,height:300
+					}
+				}
+				
+				var copy =
 				
 				
+				ResourceManager.addAssets(assets);
+				ResourceManager.addAssets(assets2);
+				ResourceManager.addCopy("resource/json/copy.json");
+				
+				Event.addListener(ResourceManager,Event.COMPLETE,onResourceComplete);
+				
+				ResourceManager.init();
 				
 				
 				var sprite = new UIElement();
@@ -47,6 +77,12 @@
 				sprite2.buttonMode(true);
 		
 				document.body.appendChild(sprite2.display);
+			}
+			function onResourceComplete()
+			{
+				//document.body.appendChild(ResourceManager.getAssetByName("logo"));
+				//document.body.appendChild(ResourceManager.getAssetByName("bg"));
+				console.log(ResourceManager.getCopyByID("headerCopy"));
 			}
 		</script>
 	</head>
