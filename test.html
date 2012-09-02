@@ -12,8 +12,8 @@
 		<script type="text/javascript" src="lib/com/wezside/decorator/Layout.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/display/DisplayObject.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/component/UIElement.js"></script>
-		<script type="text/javascript" src="lib/com/wezside/component/Label.js"></script> 
-		<script type="text/javascript" src="lib/com/wezside/component/Button.js"></script> 
+		<script type="text/javascript" src="lib/com/wezside/component/Label.js"></script>
+		<script type="text/javascript" src="lib/com/wezside/component/Button.js"></script>
 		<!--<script type="text/javascript" src="release/wezsideToolkit-min.js"></script>-->
 		<script type="text/javascript" src="lib/com/wezside/component/Sprite.js"></script>
 		<script type="text/javascript" src="src/com/view/View.js"></script>
@@ -21,7 +21,7 @@
 		<style>
 			.box {
 				background-color: #f00;
-				display:block;
+				display: block;
 			}
 			.bg {
 				background-color: #000;
@@ -38,90 +38,78 @@
 				width: 100px;
 				height: 100px;
 			}
-			.label
-			{
-				color:#ccc;
+			.label {
+				color: #ccc;
 				font-size: 20px;
 				border: 1px solid #FFF;
 				padding: 5px;
 				text-align: center;
 			}
-			.buttonLabel
-			{
-				top:4px;
+			.buttonLabel {
+				top: 4px;
 				text-align: center;
-				color:#fff;
+				color: #fff;
+			}
+			#container {
+				width: 600px;
+				height: 500px;
+				overflow: hidden;
+				position: relative;
+			}
+			#holder {
+				width: 1200px;
+				height: 500px;
+				position: relative;
 			}
 		</style>
 		<script type="text/javascript">
 			function onLoad() {
-				
-				var assets =
-				{
-					logo:{
-						path:"resource/image/1.jpg"
-					},
-					bg:{
-						path:"resource/image/2.jpg",x:120,y:300,width:100,height:300
+
+				var assets = {
+					button : {
+						path : "resource/image/button.png"
 					}
 				}
-				var assets2 =
-				{
-					logo2:{
-						path:"resource/image/1.jpg"
-					},
-					bg2:{
-						path:"resource/image/2.jpg",x:12,y:30,width:100,height:300
-					}
-				}
-				
-				var copy =
-				
-				
-				ResourceManager.addAssets(assets);
-				ResourceManager.addAssets(assets2);
-				ResourceManager.addCopy("resource/json/copy.json");
-				
-				Event.addListener(ResourceManager,Event.COMPLETE,onResourceComplete);
-				
-				//ResourceManager.init();
-				
-				
+				var copy = ResourceManager.addAssets(assets);
+				//ResourceManager.addCopy("resource/json/copy.json");
+
+				Event.addListener(ResourceManager, Event.COMPLETE, onResourceComplete);
+
+				ResourceManager.init();
+
 				var view = new View();
 				view.build();
 				view.className("box");
-				view.x(100);
-				view.y(100);
 				view.width(300);
-				view.height(350);
+				view.height(500);
 				view.visible(true);
-				view.alpha(0.7);
+				// view.alpha(0.7);
 				view.buttonMode(false);
-				document.body.appendChild(view.display);
+				document.getElementById("holder").appendChild(view.display);
 				view.arrange();
-				
+
 				var view2 = new View2();
 				view2.build();
 				view2.className("bg");
-				view2.x(410);
-				view2.y(100);
-				view2.width(520);
-				view2.height(200);
+				view2.x(300);
+				view2.width(300);
+				view2.height(500);
 				view2.visible(true);
 				view2.alpha(0.7);
 				view2.buttonMode(false);
-				document.body.appendChild(view2.display);
+				document.getElementById("holder").appendChild(view2.display);
 				view2.arrange();
-				
-				
+
 			}
-			function onResourceComplete()
-			{
+
+			function onResourceComplete() {
 				//document.body.appendChild(ResourceManager.getAssetByName("logo"));
 				//document.body.appendChild(ResourceManager.getAssetByName("bg"));
-				console.log(ResourceManager.getCopyByID("headerCopy"));
+				// console.log(ResourceManager.getCopyByID("headerCopy"));
 			}
 		</script>
 	</head>
-	<body onload="onLoad()"></body>
+	<body onload="onLoad()">
+		<div id="container"><div id="holder"></div></div>
+	</body>
 </html>

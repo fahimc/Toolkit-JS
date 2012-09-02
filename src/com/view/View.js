@@ -19,7 +19,7 @@ var View = function() {
 		var button = new Button();
 		button.build();
 		button.className("button");
-		button.asset("resource/image/button.png");
+		button.asset(ResourceManager.getAssetByName("button"));
 		button.width(150);
 		button.height(30);
 		button.labelClassName("buttonLabel");
