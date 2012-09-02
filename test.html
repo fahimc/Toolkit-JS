@@ -5,22 +5,23 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
-		<!--<script type="text/javascript" src="lib/com/utensil/JSInterface.js"></script>
+		<script type="text/javascript" src="lib/com/utensil/JSInterface.js"></script>
 		<script type="text/javascript" src="lib/com/utensil/UtensilLight.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/event/Event.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/util/manager/ResourceManager.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/decorator/Layout.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/display/DisplayObject.js"></script>
 		<script type="text/javascript" src="lib/com/wezside/component/UIElement.js"></script>
-		<script type="text/javascript" src="lib/com/wezside/component/Label.js"></script> -->
-		<script type="text/javascript" src="release/wezsideToolkit-min.js"></script>
+		<script type="text/javascript" src="lib/com/wezside/component/Label.js"></script> 
+		<script type="text/javascript" src="lib/com/wezside/component/Button.js"></script> 
+		<!--<script type="text/javascript" src="release/wezsideToolkit-min.js"></script>-->
+		<script type="text/javascript" src="lib/com/wezside/component/Sprite.js"></script>
 		<script type="text/javascript" src="src/com/view/View.js"></script>
 		<!-- Date: 2012-08-28 -->
 		<style>
 			.box {
 				background-color: #f00;
-				width: 100px;
-				height: 100px;
+				display:block;
 			}
 			.bg {
 				background-color: #000;
@@ -44,6 +45,12 @@
 				border: 1px solid #FFF;
 				padding: 5px;
 				text-align: center;
+			}
+			.buttonLabel
+			{
+				top:4px;
+				text-align: center;
+				color:#fff;
 			}
 		</style>
 		<script type="text/javascript">
@@ -86,7 +93,7 @@
 				view.x(100);
 				view.y(100);
 				view.width(300);
-				view.height(300);
+				view.height(350);
 				view.visible(true);
 				view.alpha(0.7);
 				view.buttonMode(false);
