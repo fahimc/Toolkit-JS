@@ -31,11 +31,7 @@ var VideoPlayer = function() {
 		Utensil.addListener(d, "propertychange", this.ieAddToStageHandler);
 		Utensil.addListener(d, "DOMNodeInserted", this.ieAddToStageHandler);
 
-		//this.player = _V_(this.videoId);
 
-		//this.player.src(this.sourceArray);
-
-		//_V_(this.videoId).ready(this.onReady);
 
 	}
 	this.setStyle = function() {
