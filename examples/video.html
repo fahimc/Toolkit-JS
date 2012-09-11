@@ -5,9 +5,10 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
-		
+		<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+		<script src="http://vjs.zencdn.net/c/video.js"></script>
 		<script type="text/javascript" src="../release/toolkit-v1.js"></script>
-		<script type="text/javascript" src="../src/com/view/View.js"></script>
+		<script type="text/javascript" src="../src/com/media/videoplayer.js"></script>
 		<!-- Date: 2012-08-28 -->
 		<style>
 			* {
@@ -18,12 +19,21 @@
 		</style>
 		<script type="text/javascript">
 			function onLoad() {
-
-				
-
+				player = new VideoPlayer();
+				player.addSource("http://preview.ogilvyeurope.com/Tech/landrover/resource/video/90.mp4");
+				player.controls(true);
+				player.build();
+				player.setStyle();
+				Event.addListener(player,VideoPlayer.EVENT_ADDED_TO_STAGE,onReady);
+				document.body.appendChild(player.display);
+				player.arrange();
 			}
 
-			
+			function onReady()
+			{
+				player.width(800);
+				player.height(800);
+			}
 		</script>
 	</head>
 	<body onload="onLoad()">
