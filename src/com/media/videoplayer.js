@@ -8,7 +8,10 @@ var VideoPlayer = function() {
 	this.player = null;
 	this.sourceArray = [];
 	this.build = function() {
-
+		if(Utensil.Browser.getInternetExplorerVersion()==9)
+		{
+			_V_.options.techOrder = ["flash", "html5", "links"]; 
+		}
 		var d = document.createElement("video");
 
 		this.display = d;

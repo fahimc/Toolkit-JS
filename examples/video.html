@@ -6,7 +6,7 @@
 		<title>test</title>
 		<meta name="author" content="Fahim" />
 		<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
-		<script src="http://vjs.zencdn.net/c/video.js"></script>
+		<script src="video.js"></script>
 		<script type="text/javascript" src="../release/toolkit-v1.js"></script>
 		<script type="text/javascript" src="../src/com/media/videoplayer.js"></script>
 		<!-- Date: 2012-08-28 -->
@@ -15,24 +15,43 @@
 				margin: 0;
 				padding: 0;
 			}
-			
+			#holder,#videoplayer
+			{
+				position: relative;
+			}
+			#container
+			{
+				position: absolute;
+				left: 0px;
+			}
 		</style>
 		<script type="text/javascript">
+		var player;
 			function onLoad() {
+				
 				player = new VideoPlayer();
 				player.addSource("http://preview.ogilvyeurope.com/Tech/landrover/resource/video/90.mp4");
 				player.controls(true);
 				player.build();
 				player.setStyle();
 				Event.addListener(player,VideoPlayer.EVENT_ADDED_TO_STAGE,onReady);
-				document.body.appendChild(player.display);
+				document.getElementById("holder").appendChild(player.display);
 				player.arrange();
 			}
 
 			function onReady()
 			{
+				
 				player.width(800);
 				player.height(800);
+				
+				//setInterval(moveVideo,500)
+			}
+			function moveVideo()
+			{
+				var x=document.getElementById("container").style.left.replace("px","");
+				document.getElementById("container").style.left=(x-100)+"px";
+			//	player.x(player.x()-1);
 			}
 		</script>
 	</head>
