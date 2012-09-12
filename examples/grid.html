@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>test</title>
+		<meta name="author" content="Fahim" />
+		<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+		<script src="video.js"></script>
+		<script type="text/javascript" src="../release/toolkit-v1.js"></script>
+		<script type="text/javascript" src="../src/com/decorator/GridLayout.js"></script>
+		<!-- Date: 2012-08-28 -->
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			body
+			{
+				background-color: #ccc;
+			}
+			#holder, #videoplayer {
+				position: relative;
+			}
+			#container {
+				position: absolute;
+				left: 0px;
+			}
+		</style>
+		<script type="text/javascript">
+		var test
+			function onLoad() {
+
+				var GridTest = function() {
+					this.build = function() {
+						Class._super(this, "build");
+						for(var a=0;a<30;a++)
+						{
+							this.buildBox();
+						}
+					}
+					this.buildBox = function() {
+						var min = 100;
+						var max = 300;
+						var h = Math.floor(Math.random() * (max - min + 1)) + min;
+
+						var element = new Sprite();
+						element.build();
+						element.drawRect(0, 0, Utensil.stageWidth()/5,h,"#"+((1<<24)*Math.random()|0).toString(16) );
+						element.setStyle();
+						this.addChild(element);
+						element.arrange();
+					}
+				}
+				Class.extend(GridTest, UIElement);
+				
+				test = new GridTest();
+				test.layout(new GridLayout());
+				test.width(Utensil.stageWidth());
+				test.height(500);
+				test.build();
+				test.setStyle();
+				
+				document.body.appendChild(test.display);
+				
+				test.arrange();
+				
+				Utensil.addListener(window,"resize",onResize);
+			}
+			function onResize()
+			{
+				test.width(Utensil.stageWidth());
+				test.arrange();
+			}
+		</script>
+	</head>
+	<body onload="onLoad()">
+		
+	</body>
+</html>

@@ -1095,7 +1095,13 @@ var Sprite = function() {
 	}
 	_.setColor=function(c)
 	{
-		this.display.style.backgroundColor = c;
+		
+		if(this.display.style.backgroundColor)
+		{
+			this.display.style.backgroundColor = c;
+		}else{
+			this.display.style.background=c; 
+		}
 	};
 	_.setCorners=function(rad)
 	{
