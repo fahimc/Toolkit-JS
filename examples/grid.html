@@ -18,6 +18,7 @@
 			}
 			body
 			{
+				overflow:hidden;
 				background-color: #ccc;
 			}
 			#holder, #videoplayer {
@@ -108,8 +109,11 @@
 			}
 			function onResize()
 			{
-				test.width(500);
+				
+				test.height(Utensil.stageHeight());
+				test.width(Utensil.stageWidth());
 				test.arrange();
+				
 			}
 		</script>
 	</head>
