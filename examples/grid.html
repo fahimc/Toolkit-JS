@@ -9,6 +9,7 @@
 		<script src="video.js"></script>
 		<script type="text/javascript" src="../release/toolkit-v1.js"></script>
 		<script type="text/javascript" src="../src/com/decorator/GridLayout.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/decorator/ScrollLayout.js"></script>
 		<!-- Date: 2012-08-28 -->
 		<style>
 			* {
@@ -26,6 +27,43 @@
 				position: absolute;
 				left: 0px;
 			}
+			.scrollgeneric {
+				line-height: 1px;
+				font-size: 1px;
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+
+			.vscrollerbase {
+				width: 10px;
+				background-color: #fff;
+			}
+			.vscrollerbar {
+				width: 5px;
+				background-color: #666;
+				-moz-border-radius: 10px; /* Firefox */
+				-webkit-border-radius: 10px; /* Safari, Chrome */
+				border-radius: 10px; /* CSS3 */
+			}
+			.hscrollerbase {
+				height: 10px;
+				background-color: white;
+			}
+			.hscrollerbar {
+				height: 10px;
+				background-color: black;
+			}
+
+			.scrollerjogbox {
+				width: 10px;
+				height: 10px;
+				top: auto;
+				left: auto;
+				bottom: 0px;
+				right: 0px;
+				background-color: gray;
+			}
 		</style>
 		<script type="text/javascript">
 		var test
@@ -34,7 +72,7 @@
 				var GridTest = function() {
 					this.build = function() {
 						Class._super(this, "build");
-						for(var a=0;a<30;a++)
+						for(var a=0;a<10;a++)
 						{
 							this.buildBox();
 						}
@@ -43,7 +81,7 @@
 						var min = 100;
 						var max = 300;
 						var h = Math.floor(Math.random() * (max - min + 1)) + min;
-
+						// h=100;
 						var element = new Sprite();
 						element.build();
 						element.drawRect(0, 0, Utensil.stageWidth()/5,h,"#"+((1<<24)*Math.random()|0).toString(16) );
@@ -56,7 +94,8 @@
 				
 				test = new GridTest();
 				test.layout(new GridLayout());
-				test.width(Utensil.stageWidth());
+				test.layout(new ScrollLayout());
+				test.width(700);
 				test.height(500);
 				test.build();
 				test.setStyle();
@@ -69,7 +108,7 @@
 			}
 			function onResize()
 			{
-				test.width(Utensil.stageWidth());
+				test.width(500);
 				test.arrange();
 			}
 		</script>

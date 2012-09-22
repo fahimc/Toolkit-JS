@@ -1096,11 +1096,11 @@ var Sprite = function() {
 	_.setColor=function(c)
 	{
 		
-		if(this.display.style.backgroundColor)
+		if(!this.display.style.backgroundColor===undefined)
 		{
 			this.display.style.backgroundColor = c;
-		}else{
-			this.display.style.background=c; 
+		}else {
+			if(this.display)this.display.style.background=c; 
 		}
 	};
 	_.setCorners=function(rad)
