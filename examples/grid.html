@@ -65,6 +65,9 @@
 				right: 0px;
 				background-color: gray;
 			}
+			.test{
+				background-color: #0f0;
+			}
 		</style>
 		<script type="text/javascript">
 		var test
@@ -95,12 +98,18 @@
 				
 				test = new GridTest();
 				test.layout(new GridLayout());
+				test.layout().left=10;
+				test.layout().top=10;
+				test.layout().verticalGap=10;
+				test.layout().horizontalGap=10;
 				test.layout(new ScrollLayout());
 				test.width(700);
 				test.height(500);
 				test.build();
+				test.className("test")
 				test.setStyle();
-				
+				test.x(100);
+				test.y(100);
 				document.body.appendChild(test.display);
 				
 				test.arrange();
@@ -111,7 +120,7 @@
 			{
 				
 				test.height(Utensil.stageHeight());
-				test.width(Utensil.stageWidth());
+				test.width(700);
 				test.arrange();
 				
 			}

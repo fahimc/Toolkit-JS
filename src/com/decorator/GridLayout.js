@@ -26,7 +26,7 @@ var GridLayout = function() {
 			if(row > 0) {
 				var data = this.getChildHeight(obj, row - 1, col);
 				;
-				currentY = parseInt(data.y) + parseInt(data.height);
+				currentY = parseInt(data.y) + parseInt(data.height)+ parseInt(this.verticalGap);
 			}
 			child.style.top = parseInt(currentY) + "px";
 			child.style.left = parseInt(currentX) + "px";
