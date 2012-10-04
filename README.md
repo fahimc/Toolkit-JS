@@ -5,6 +5,9 @@ This is a cross browser JS OOP Architecture. This was based on [wezside toolkit 
 Contain These Libraries:  
 [Utensil](https://github.com/fahimc/Utensil/)
 
+#Latest Version  
+[toolkitMax](https://github.com/fahimc/Toolkit-JS/downloads)
+
 #About  
 With this toolkit you can build extendable objects which are fully inheritable. 
 
