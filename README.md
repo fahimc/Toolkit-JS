@@ -5,9 +5,24 @@ This is a cross browser JS OOP Architecture. This was based on [wezside toolkit 
 Contain These Libraries:  
 [Utensil](https://github.com/fahimc/Utensil/)
 
-## Get the Latest version  
-[toolkitMax](https://github.com/fahimc/Toolkit-JS/downloads)
+#About  
+With this toolkit you can build extendable objects which are fully inheritable. 
 
+The UIElement is the main object which is the minimal that you should extend because all the other classes extend it. The UIElement does all the cross browser code for each method it contains. It creates a DIV as its base which will be positioned absolute to allow you to move it via the x() and y() functions. The styles will be set by CSS with a classname that you provide in the className() method. The children that you add gets added to another DIV within the UIElement which is called the childContainer to allow you to set overflow hidden and hide the children. There are many other reasons for the childContainer.  
+
+Have a look at the different layout managers such as VerticalLayout or HorizontalLayout as these will automatically lay out the child for you. The good thing about layouts is that you can use multiple ones at the same time.
+
+#Example of the UIElement  
+
+    var View = function() {
+    }  
+    Class.extend(View, UIElement);      
+
+    var view = new View();
+    view.build();
+    view.setStyle();
+    document.body.appendChild(view.display);
+    view.arrange();
 
 #Content 
 [0. Project Structure](https://github.com/fahimc/Toolkit-JS/wiki/0.-Project-Structure)  
@@ -24,6 +39,8 @@ Contain These Libraries:
 
 ---
 #API
+
+[DisplayObject](https://github.com/fahimc/Toolkit-JS/wiki/DisplayObject)  
 [UIElement](https://github.com/fahimc/Toolkit-JS/wiki/API---UIElement-Method-List)  
 [Label](https://github.com/fahimc/Toolkit-JS/wiki/API-Label-Method-List)   
 [Button](https://github.com/fahimc/Toolkit-JS/wiki/API-Button-Method-List)  
