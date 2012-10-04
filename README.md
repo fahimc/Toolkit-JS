@@ -5,6 +5,9 @@ This is a cross browser JS OOP Architecture. This was based on [wezside toolkit 
 Contain These Libraries:  
 [Utensil](https://github.com/fahimc/Utensil/)
 
+## Get the Latest version  
+[toolkitMax](https://github.com/fahimc/Toolkit-JS/downloads)
+
 
 #Content 
 [0. Project Structure](https://github.com/fahimc/Toolkit-JS/wiki/0.-Project-Structure)  
