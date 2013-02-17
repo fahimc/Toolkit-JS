@@ -139,9 +139,9 @@ var Engine = function() {
 		
 		var v = startY>endY?"up":"down";
 		var h = startX>endX?"left":"right";
-		var md = endX>endY?"h":"v";
+		var md = Math.abs(startX-endX)>Math.abs(startY-endY)?"h":"v";
 		
-		
+		console.log(md,v,h)
 		
 	}
 	this.getXCell=function(x)
