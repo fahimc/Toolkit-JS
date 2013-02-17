@@ -7,16 +7,30 @@
 		<meta name="author" content="Fahim" />
 		<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
 		<script src="video.js"></script>
-		<script type="text/javascript" src="../release/toolkitMax-v1-compressed.js"></script>
+		<!-- <script type="text/javascript" src="../release/toolkitMax-v1001.js"></script> -->
+		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
+		<script type="text/javascript" src="../lib/com/utensil/UtensilLight.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/event/Event.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/decorator/Layout.js"></script>
+		<script type="text/javascript" src="../src/com/decorator/GridLayout.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/decorator/ScrollLayout.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/display/DisplayObject.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/component/UIElement.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/component/Sprite.js"></script>
 		<!-- Date: 2012-08-28 -->
 		<style>
 			* {
 				margin: 0;
 				padding: 0;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
 			}
-			body
-			{
-				overflow:hidden;
+			body {
+				overflow: hidden;
 				background-color: #ccc;
 			}
 			#holder, #videoplayer {
@@ -63,19 +77,29 @@
 				right: 0px;
 				background-color: gray;
 			}
-			.test{
+			.scrollTrack {
+				width: 20px;
+				background-color: #000;
+			}
+			.scrollThumb {
+				width: 20px;
+				background-color: #e4e4e4;
+			}
+			.test {
 				background-color: #0f0;
 			}
+
 		</style>
 		<script type="text/javascript">
-		var test
+			var test;
+			var children=[];
+			var first=true;
 			function onLoad() {
 
 				var GridTest = function() {
 					this.build = function() {
 						Class._super(this, "build");
-						for(var a=0;a<10;a++)
-						{
+						for (var a = 0; a < 10; a++) {
 							this.buildBox();
 						}
 					}
@@ -86,21 +110,39 @@
 						// h=100;
 						var element = new Sprite();
 						element.build();
-						element.drawRect(0, 0, Utensil.stageWidth()/5,h,"#"+((1<<24)*Math.random()|0).toString(16) );
+						element.drawRect(0, 0, Utensil.stageWidth() / 5, h, "#" + ((1 << 24) * Math.random() | 0).toString(16));
 						element.setStyle();
 						this.addChild(element);
 						element.arrange();
+						children.push(element);
+						var hand = function(event) {
+							element.startDrag(event);
+						}
+						var handUp = function(event) {
+							element.stopDrag(event);
+							// console.log(element.hitTestObject(children[1]));
+							console.log(element.hitTestPoint(children[1].x(),children[1].y()));
+						}
+						if(first)
+						
+						
+						{
+							Utensil.addListener(element.display, "mousedown", hand);
+							first=false;
+							Utensil.addListener(document, "mouseup", handUp);
+						}
 					}
 				}
 				Class.extend(GridTest, UIElement);
-				
+
 				test = new GridTest();
 				test.layout(new GridLayout());
-				test.layout().left=10;
-				test.layout().top=10;
-				test.layout().verticalGap=10;
-				test.layout().horizontalGap=10;
+				test.layout().left = 10;
+				test.layout().top = 10;
+				test.layout().verticalGap = 10;
+				test.layout().horizontalGap = 10;
 				test.layout(new ScrollLayout());
+				test.layout().scrollHeight = 500;
 				test.width(700);
 				test.height(500);
 				test.build();
@@ -109,22 +151,22 @@
 				test.x(100);
 				test.y(100);
 				document.body.appendChild(test.display);
-				
+
 				test.arrange();
-				
-				Utensil.addListener(window,"resize",onResize);
+
+				Utensil.addListener(window, "resize", onResize);
 			}
-			function onResize()
-			{
-				
+
+			function onResize() {
+
 				test.height(Utensil.stageHeight());
 				test.width(700);
 				test.arrange();
-				
+
 			}
 		</script>
 	</head>
 	<body onload="onLoad()">
-		
+
 	</body>
 </html>
