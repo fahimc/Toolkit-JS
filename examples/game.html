@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>test</title>
+		<meta name="author" content="Fahim" />
+		<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+		<script src="video.js"></script>
+		<!-- <script type="text/javascript" src="../release/toolkitMax-v1001.js"></script> -->
+		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
+		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
+		<script type="text/javascript" src="../lib/com/greensock/TweenLite.js"></script>
+		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
+		<script type="text/javascript" src="../lib/com/utensil/UtensilLight.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/event/Event.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/decorator/Layout.js"></script>
+		<script type="text/javascript" src="../src/com/decorator/GridLayout.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/decorator/ScrollLayout.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/display/DisplayObject.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/component/UIElement.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/component/Sprite.js"></script>
+		<script type="text/javascript" src="../lib/com/wezside/util/global.js"></script>
+		<script type="text/javascript" src="../src/com/game/Engine.js"></script>
+		<!-- Date: 2012-08-28 -->
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			body {
+				overflow: hidden;
+				background-color: #ccc;
+			}
+			
+
+		</style>
+		<script type="text/javascript">
+			var man;
+			var game;
+			var sx;
+			var sy;
+			function onLoad() {
+
+				game = new Engine();
+				game.width(500);
+				game.height(500);
+				game.showGrid(true);
+				game.init();
+				
+				var obj = new Sprite();
+				obj.build();
+				obj.drawRect(25,25,35,35,"#f00");
+				obj.setStyle();
+				obj.arrange();
+				//document.body.appendChild(obj.display);
+				
+				game.addObstacle(obj);
+				game.addObstacle(150,150);
+				game.addObstacle(160,150);
+				game.addObstacle(170,160);
+			
+				
+				
+				man = new Sprite();
+				man.build();
+				man.drawCircle(250,250,35,"#0f0");
+				man.setStyle();
+				man.arrange();
+				document.body.appendChild(man.display);
+				
+				Utensil.addListener(window, "resize", onResize);
+				Utensil.addListener(man.display, "mousedown", onMouseDown);
+				Utensil.addListener(document, "mouseup", onMouseUp);
+			}
+			function onMouseDown(event) {
+				sx = man.x();
+				sy = man.y();
+			Utensil.addListener(document, "mousemove", onMouseMove);
+			}
+			function onMouseUp(event) {
+			Utensil.removeListener(document, "mousemove", onMouseMove);
+				if(game.getOccupiedXY(man))
+				{
+					TweenLite.to(man,0.5,{x:sx,y:sy});
+				}
+			}
+			function onMouseMove(event) {
+			
+			man.x(Utensil.mouseX(document.body,event));
+			man.y(Utensil.mouseY(document.body,event));
+
+			}
+			function onResize() {
+
+			
+
+			}
+		</script>
+	</head>
+	<body onload="onLoad()">
+
+	</body>
+</html>
