@@ -75,7 +75,7 @@
 				man.arrange();
 				document.body.appendChild(man.display);
 				
-				game.findPathTo(man,300,100);
+				game.findPathTo(man,0,0);
 				
 				Utensil.addListener(window, "resize", onResize);
 				Utensil.addListener(man.display, "mousedown", onMouseDown);
