@@ -35,6 +35,9 @@ var Engine = function() {
 		var end = false;
 		var sp;
 		while (!end) {
+			if (!this.astar.grid[currentRow])
+				this.astar.grid[currentRow] = [];
+			this.astar.setCell(currentRow, currentCol, false);
 			sp = new Sprite();
 			sp.build();
 			sp.lineStyle();
@@ -56,12 +59,12 @@ var Engine = function() {
 		holder.arrange();
 		document.body.appendChild(holder.display);
 	};
-	this.setCell = function(x, y,color) {
+	this.setCell = function(x, y, color) {
 		if (!this.prop.grid)
 			return;
 		var id = this.prop.gridCellId + x + "_" + y;
 		var cell = document.getElementById(id);
-		cell.style.backgroundColor = color?color:"#f00";
+		cell.style.backgroundColor = color ? color : "#f00";
 	};
 	this.addObstacle = function(obj, y) {
 		var startX = this.getXCell(y == undefined ? obj.x() : obj);
@@ -70,6 +73,7 @@ var Engine = function() {
 		var endY = this.getYCell(y == undefined ? (Int(obj.y()) + Int(obj.height())) : y);
 		var end = false;
 		var cX = startX;
+		this.astar.setblock({x:startX,y:startY},{x:endX,y:endY},true);
 		while (!end) {
 			this.setOccupiedXY(cX, startY);
 			this.setCell(cX, startY);
@@ -81,13 +85,13 @@ var Engine = function() {
 			if (startY >= endY)
 				end = true;
 		}
+		
 		delete startX;
 		delete startY;
 		delete endX;
 		delete endY;
 		delete cX;
 		delete end;
-		console.log(this.prop.occupiedXY);
 	};
 	this.setOccupiedXY = function(x, y) {
 		if (!this.prop.occupiedXY[x])
@@ -133,89 +137,16 @@ var Engine = function() {
 
 		var endX = this.getXCell(x);
 		var endY = this.getYCell(y);
-
-		var v = startY > endY ? "up" : "down";
-		var h = startX > endX ? "left" : "right";
-		var md = Math.abs(startX - endX) > Math.abs(startY - endY) ? "h" : "v";
-
 		console.log(startX,startY,endX,endY);
-
-		var paths = [];
-		var cy = startY;
-		var cx = startX;
-		var end = false;
-		while (!end) {
-			if(startY<endY)
-				{
-					cy++;
-				}else{
-					cy--;
-				}
-				if(startX<endX)
-				{
-					cx++;
-				}else{
-					cx--;
-				}
-			if (md == "v") {
-				
-				if (this.prop.occupiedXY[cx] && this.prop.occupiedXY[cx][cy]) {
-					//check if x-1 is has object or check if x+1 has object
-					var hasLeft = (this.prop.occupiedXY[cx - 1] && this.prop.occupiedXY[cx-1][cy]) ? true : false;
-					var hasRight = (this.prop.occupiedXY[cx + 1] && this.prop.occupiedXY[cx+1][cy]) ? true : false;
-					if (!hasLeft) {
-						cx--;
-					} else if (!hasRight) {
-						cx++;
-					}else{
-						md="h";
-					}
-					console.log("v has",hasLeft,hasRight,cx+1,cx);
-				}
-					
-			}
-			if (md == "h") {
-				if (this.prop.occupiedXY[cx] && this.prop.occupiedXY[cx][cy]) {
-					//check if x-1 is has object or check if x+1 has object
-					var hasUp = (this.prop.occupiedXY[cx] && this.prop.occupiedXY[cx][cy-1]) ? true : false;
-					var hasDown = (this.prop.occupiedXY[cx] && this.prop.occupiedXY[cx][cy+1]) ? true : false;
-					if (!hasUp) {
-						cy--;
-					} else if (!hasDown) {
-						cy++;
-					}else{
-						md="v";
-					}
-					console.log("h has",hasUp,hasDown,cx+1,cx)
-				}
-			}
-			paths.push([cx, cy]);
-			var xEnded=false;
-			var yEnded=false;
-			if(startX<endX)
-			{
-				if(cx >=endX)xEnded=true;
-			}else{
-				if(cx <=endX)xEnded=true;
-			}
-			if(startY<endY)
-			{
-				if(cy >=endY)yEnded=true;
-			}else{
-				if(cy <=endY)yEnded=true;
-			}
-			if(xEnded && yEnded)end=true;
-		}
-		console.log(paths);
-		this.drawPath(paths);
+		this.astar.search(this,startX,startY,endX,endY);
+		
+		// this.drawPath(paths);
 	};
-	this.drawPath=function(paths)
-	{
+	this.drawPath = function(paths) {
 		if (!this.prop.grid)
 			return;
-		for(var a=0;a<paths.length;a++)
-		{
-			this.setCell(paths[a][0],paths[a][0],"#00f");
+		for (var a = 0; a < paths.length; a++) {
+			this.setCell(paths[a][0], paths[a][0], "#00f");
 		}
 	}
 	this.getXCell = function(x) {
@@ -245,4 +176,177 @@ var Engine = function() {
 			this.prop.height = value;
 		}
 	};
+	this.astar = {
+		//http://en.literateprograms.org/A*_search_(JavaScript)
+		grid : [],
+		opened : [],
+		start : null,
+		target : null,
+		parent : null,
+		last:null,
+		pos : function(x, y) {
+			this.x = x;
+			this.y = y;
+			this.cost = 0;
+			this.totalcost = 0;
+			this.blocked = false;
+			this.closed = false;
+			this.prev = null;
+
+			this.str = function() {
+				return this.x + "," + this.y;
+			}
+			this.equal = function(p) {
+				return this.x == p.x && this.y == p.y;
+			}
+		},
+		opencell : function(p, cost, prev) {
+			
+			if (p.blocked)
+				return null;
+
+			if (prev && prev.prev && !prev.equal(this.start)) {
+				if (p.x - prev.x != prev.x - prev.prev.x || p.y - prev.y != prev.y - prev.prev.y)
+					cost += 4;
+			}
+
+			var totalcost = parseFloat(cost) + 14 * (Math.abs(p.x - this.target.x) + Math.abs(p.y - this.target.y));
+			/* If position is already considered: check for better cost */
+			if (p.totalcost != 0) {
+				if (totalcost < p.totalcost) {
+					var nn;
+					for ( nn = 0; nn < this.opened.length; ++nn) {
+						if (p.equal(this.opened[nn])) {
+							this.opened.splice(nn, 1);
+							break;
+						}
+					}
+				} else
+					return null;
+			}
+
+			p.cost = cost;
+			p.prev = prev;
+			p.totalcost = totalcost;
+
+			var n = 0;
+			for ( n = 0; n < this.opened.length; ++n) {
+				if (p.totalcost < this.opened[n].totalcost) {
+					this.opened.splice(n, 0, p);
+					break;
+				}
+			}
+			if (n >= this.opened.length)
+				this.opened[n] = p;
+			this.grid[p.y][p.x] = p;
+			this.last=p;
+			//if(!p.equal(this.start)) this.parent.setCell(p.x,p.y);
+			
+			return p;
+		},
+		openadjacent : function(p) {
+			var cost = this.grid[p.y][p.x].cost + 10;
+			if (p.x > 0)
+				this.opencell(this.grid[p.y][p.x - 1], cost, p);
+			if (p.y > 0)
+				this.opencell(this.grid[p.y-1][p.x], cost, p);
+			if (p.y < (this.parent.cellSize() - 1))
+				this.opencell(this.grid[p.y-(-1)][p.x], cost, p);
+			if (p.x < (this.parent.cellSize() - 1))
+				this.opencell(this.grid[p.y][p.x - (-1)], cost, p);
+		},
+		search : function(parent,sx,sy,tx,ty) {
+			this.parent = parent;
+			var best;
+			var n = 0;
+			this.setstart(new this.pos(sx, sy));
+			this.settarget(new this.pos(tx, ty));
+
+			//var chb = document.getElementById("chb_paintopen");
+			//paint_open = chb.checked;
+			
+			best = this.opencell(this.start, 0, this.start);
+			while (best && !best.equal(this.target)) {
+				best.closed = true;
+				this.opened.shift();
+				this.openadjacent(best);
+
+				if (this.opened.length > 0)
+					best = this.opened[0];
+				else
+					best = null;
+
+				if (++n > 10000) {
+					best = null;
+					break;
+				}	/* Catch non-stop loops (should never happen) */
+			}
+			
+			if (!best) {
+				console.log ("No route found");
+				return;
+			}
+
+			/* Find way back */
+			while (!best.equal(this.start)) {
+				this.parent.setCell(best.x,best.y,"#00f");
+			
+				best = best.prev;
+				if (!best) {
+					console.log ("Something strange happend");
+					/* Should never happen */
+					break;
+				}
+			}
+			
+		},
+		setCell : function(y, x) {
+			this.grid[y][x] = {};
+			this.grid[y][x].cost = 0;
+			this.grid[y][x].totalcost = 0;
+			this.grid[y][x].prev = null;
+			this.grid[y][x].closed = false;
+			this.grid[y][x].blocked = false;
+			this.grid[y][x].x = x;
+			this.grid[y][x].y = y;
+			this.grid[y][x].str = function() {
+				return this.x + "," + this.y;
+			}
+			this.grid[y][x].equal = function(p) {
+				return this.x == p.x && this.y == p.y;
+			}
+		},
+		setblock : function(p1, p2, block) {
+			for (var y = p1.y; y <= p2.y; ++y) {
+				for (var x = p1.x; x <= p2.x; ++x) {
+					if (block) {
+						//setcolor(this.grid[y][x], blocked_color);
+						this.grid[y][x].blocked = true;
+					} else {
+						//setcolor(this.grid[y][x], nothing_color);
+						this.grid[y][x].blocked = false;
+					}
+				}
+			}
+		},
+		setstart : function(p) {
+			if (this.start) {
+				//settext(start, "");
+				//setcolor(start, nothing_color);
+			}
+			this.start = p;
+			// settext(start, "S");
+			// setcolor(start, start_color);
+		},
+		settarget : function(p) {
+			if (this.target) {
+				// settext(target, "");
+				// setcolor(target, nothing_color);
+			}
+			this.target = p;
+			// settext(target, "T");
+			// setcolor(target, target_color);
+		}
+	}
+
 };
