@@ -46,26 +46,26 @@
 			var game;
 			var sx;
 			var sy;
+			var px;
+			var py;
 			function onLoad() {
 
 				game = new Engine();
 				game.width(500);
 				game.height(500);
+				game.cellSize(50);
 				game.showGrid(true);
+				//Event.addListener(game,game.event.READY,addObstacles);
 				game.init();
 				
-				var obj = new Sprite();
-				obj.build();
-				obj.drawRect(25,25,35,35,"#f00");
-				obj.setStyle();
-				obj.arrange();
+				
+				createObj();
+				createObj();
+				createObj();
+				createObj();
+				
 				//document.body.appendChild(obj.display);
 				
-				game.addObstacle(obj);
-				game.addObstacle(150,150);
-				game.addObstacle(160,150);
-				game.addObstacle(170,150);
-			
 				
 				
 				man = new Sprite();
@@ -75,11 +75,16 @@
 				man.arrange();
 				document.body.appendChild(man.display);
 				
-				game.findPathTo(man,0,0);
+				game.findPathTo(man,300,1);
 				
 				Utensil.addListener(window, "resize", onResize);
 				Utensil.addListener(man.display, "mousedown", onMouseDown);
 				Utensil.addListener(document, "mouseup", onMouseUp);
+			}
+			function addObstacles()
+			{
+				
+			
 			}
 			function onMouseDown(event) {
 				sx = man.x();
@@ -90,14 +95,41 @@
 			Utensil.removeListener(document, "mousemove", onMouseMove);
 				if(game.getOccupiedXY(man))
 				{
+					TweenLite.killTweensOf(man);
 					TweenLite.to(man,0.5,{x:sx,y:sy});
+					
+				}else{
+					px=Utensil.mouseX(document.body,event);
+					py=Utensil.mouseY(document.body,event);
+					game.astar.wipe();
+					TweenLite.killTweensOf(man);
+					TweenLite.to(man,0.5,{x:sx,y:sy,onComplete:setNewPath});
 				}
+			}
+			function setNewPath(event)
+			{
+				
+				game.findPathTo(man,px,py);
+				TweenLite.killTweensOf(man);
+					TweenLite.to(man,0.5,{x:px,y:py});
 			}
 			function onMouseMove(event) {
 			
 			man.x(Utensil.mouseX(document.body,event));
 			man.y(Utensil.mouseY(document.body,event));
 
+			}
+			function createObj()
+			{
+				var randomX = Math.floor(Math.random() * (499 - 0 + 1)) + 0;
+				var randomY = Math.floor(Math.random() * (499 - 0 + 1)) + 0;
+				
+				var obj = new Sprite();
+				obj.build();
+				obj.drawRect(randomX,randomY,35,35,"#f00");
+				obj.setStyle();
+				obj.arrange();
+				game.addObstacle(obj);
 			}
 			function onResize() {
 

@@ -1,5 +1,7 @@
 var Engine = function() {
-	this.prop = {
+	this.event = {
+		READY : "ENGINE_READY"
+	}, this.prop = {
 		width : 0,
 		height : 0,
 		grid : false,
@@ -17,7 +19,7 @@ var Engine = function() {
 	};
 	this.init = function() {
 		this.createGrid();
-
+		this.astar.parent = this;
 	};
 	this.createGrid = function() {
 		if (!this.prop.grid)
@@ -30,6 +32,8 @@ var Engine = function() {
 
 		var cols = parseInt(this.width() / this.cellSize());
 		var rows = parseInt(this.height() / this.cellSize());
+		this.astar.rows = rows;
+		this.astar.cols = cols;
 		var currentRow = 0;
 		var currentCol = 0;
 		var end = false;
@@ -54,16 +58,19 @@ var Engine = function() {
 			}
 			if (currentRow >= rows) {
 				end = true;
+
 			}
 		}
 		holder.arrange();
 		document.body.appendChild(holder.display);
+		//Event.dispatch(this, this.event.READY);
 	};
 	this.setCell = function(x, y, color) {
-		if (!this.prop.grid)
-			return;
+		
 		var id = this.prop.gridCellId + x + "_" + y;
 		var cell = document.getElementById(id);
+		if (!cell)
+			return;
 		cell.style.backgroundColor = color ? color : "#f00";
 	};
 	this.addObstacle = function(obj, y) {
@@ -73,10 +80,16 @@ var Engine = function() {
 		var endY = this.getYCell(y == undefined ? (Int(obj.y()) + Int(obj.height())) : y);
 		var end = false;
 		var cX = startX;
-		this.astar.setblock({x:startX,y:startY},{x:endX,y:endY},true);
+		this.astar.setblock({
+			x : startX,
+			y : startY
+		}, {
+			x : endX,
+			y : endY
+		}, true, this.astar);
 		while (!end) {
 			this.setOccupiedXY(cX, startY);
-			this.setCell(cX, startY);
+			
 			cX++;
 			if (cX >= endX) {
 				cX = startX;
@@ -85,7 +98,6 @@ var Engine = function() {
 			if (startY >= endY)
 				end = true;
 		}
-		
 		delete startX;
 		delete startY;
 		delete endX;
@@ -134,12 +146,12 @@ var Engine = function() {
 	this.findPathTo = function(obj, x, y) {
 		var startX = this.getXCell(obj.x());
 		var startY = this.getYCell(obj.y());
-
 		var endX = this.getXCell(x);
 		var endY = this.getYCell(y);
-		console.log(startX,startY,endX,endY);
-		this.astar.search(this,startX,startY,endX,endY);
-		
+		this.setCell(startX,startY, "purple");
+			this.setCell(endX, endY, "yellow");
+		this.astar.search(startX, startY, endX, endY);
+
 		// this.drawPath(paths);
 	};
 	this.drawPath = function(paths) {
@@ -183,7 +195,9 @@ var Engine = function() {
 		start : null,
 		target : null,
 		parent : null,
-		last:null,
+		last : null,
+		rows : 0,
+		cols : 0,
 		pos : function(x, y) {
 			this.x = x;
 			this.y = y;
@@ -201,8 +215,8 @@ var Engine = function() {
 			}
 		},
 		opencell : function(p, cost, prev) {
-			
-			if (p.blocked)
+
+			if (!p||p.blocked)
 				return null;
 
 			if (prev && prev.prev && !prev.equal(this.start)) {
@@ -238,10 +252,11 @@ var Engine = function() {
 			}
 			if (n >= this.opened.length)
 				this.opened[n] = p;
+				if(!this.grid[p.y])return null;
 			this.grid[p.y][p.x] = p;
-			this.last=p;
+			this.last = p;
 			//if(!p.equal(this.start)) this.parent.setCell(p.x,p.y);
-			
+
 			return p;
 		},
 		openadjacent : function(p) {
@@ -250,13 +265,13 @@ var Engine = function() {
 				this.opencell(this.grid[p.y][p.x - 1], cost, p);
 			if (p.y > 0)
 				this.opencell(this.grid[p.y-1][p.x], cost, p);
-			if (p.y < (this.parent.cellSize() - 1))
+			if (p.y < (this.rows - 1))
 				this.opencell(this.grid[p.y-(-1)][p.x], cost, p);
-			if (p.x < (this.parent.cellSize() - 1))
+			if (p.x < (this.cols - 1))
 				this.opencell(this.grid[p.y][p.x - (-1)], cost, p);
 		},
-		search : function(parent,sx,sy,tx,ty) {
-			this.parent = parent;
+		search : function(sx, sy, tx, ty) {
+			
 			var best;
 			var n = 0;
 			this.setstart(new this.pos(sx, sy));
@@ -264,7 +279,7 @@ var Engine = function() {
 
 			//var chb = document.getElementById("chb_paintopen");
 			//paint_open = chb.checked;
-			
+
 			best = this.opencell(this.start, 0, this.start);
 			while (best && !best.equal(this.target)) {
 				best.closed = true;
@@ -281,24 +296,24 @@ var Engine = function() {
 					break;
 				}	/* Catch non-stop loops (should never happen) */
 			}
-			
+
 			if (!best) {
-				console.log ("No route found");
+				console.log("No route found");
 				return;
 			}
 
 			/* Find way back */
 			while (!best.equal(this.start)) {
-				this.parent.setCell(best.x,best.y,"#00f");
-			
+				this.parent.setCell(best.x, best.y, "#00f");
+
 				best = best.prev;
 				if (!best) {
-					console.log ("Something strange happend");
+					console.log("Something strange happend");
 					/* Should never happen */
 					break;
 				}
 			}
-			
+			return best;
 		},
 		setCell : function(y, x) {
 			this.grid[y][x] = {};
@@ -316,36 +331,67 @@ var Engine = function() {
 				return this.x == p.x && this.y == p.y;
 			}
 		},
-		setblock : function(p1, p2, block) {
+		setblock : function(p1, p2, block, parent) {
+
 			for (var y = p1.y; y <= p2.y; ++y) {
 				for (var x = p1.x; x <= p2.x; ++x) {
+					if (!parent.grid[y] || !parent.grid[y][x])
+						return;
 					if (block) {
+						
 						//setcolor(this.grid[y][x], blocked_color);
-						this.grid[y][x].blocked = true;
+						parent.parent.setCell(x, y,"#f00");
+						parent.grid[y][x].blocked = true;
 					} else {
 						//setcolor(this.grid[y][x], nothing_color);
-						this.grid[y][x].blocked = false;
+						parent.parent.setCell(x, y);
+						parent.grid[y][x].blocked = false;
 					}
 				}
 			}
 		},
+		wipe : function() {
+			var y, x;
+
+
+			this.opened = [];
+
+			for ( y = 0; y < this.rows; ++y) {
+				for ( x = 0; x < this.cols; ++x) {
+					this.grid[y][x].cost = 0;
+					this.grid[y][x].totalcost = 0;
+					this.grid[y][x].prev = null;
+					this.grid[y][x].closed = false;
+
+					if (this.grid[y][x].blocked)
+					this.parent.setCell(x, y, "#f00");
+						
+					else
+						this.parent.setCell(x, y, "#fff");
+				}
+			}
+			this.parent.setCell(this.start.x, this.start.y, "none");
+			this.parent.setCell(this.target.x, this.target.y, "none");
+		},
 		setstart : function(p) {
 			if (this.start) {
 				//settext(start, "");
-				//setcolor(start, nothing_color);
+				this.parent.setCell(p.x, p.y, "yellow");
 			}
 			this.start = p;
 			// settext(start, "S");
 			// setcolor(start, start_color);
+			this.parent.setCell(p.x, p.y, "purple");
 		},
 		settarget : function(p) {
 			if (this.target) {
 				// settext(target, "");
-				// setcolor(target, nothing_color);
+				this.parent.setCell(p.x, p.y, "yellow");
 			}
 			this.target = p;
 			// settext(target, "T");
 			// setcolor(target, target_color);
+			this.parent.setCell(p.x, p.y, "yellow");
 		}
 	}
 
