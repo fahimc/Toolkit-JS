@@ -8,7 +8,27 @@ var Engine = function() {
 		cellSize : 10,
 		gridCellIndex : 0,
 		gridCellId : "cell-",
-		occupiedXY : []
+		occupiedXY : [],
+		ignoreCells:[],
+		layer : {
+			bgId : "engineBGLayer",
+			character : "engineCharacterLayer",
+			front : "engineFrontLayer"
+		},
+		container : null,
+	}
+	this.holder = null;
+	this.container = function(id) {
+		if (id == undefined) {
+			var c;
+			if (!this.prop.container) {
+				c = document.body;
+			} else {
+				c = document.getElementById(this.prop.container);
+			}
+			return c;
+		}
+		this.prop.container = id;
 	}
 	this.showGrid = function(value) {
 		if (value == undefined) {
@@ -24,11 +44,11 @@ var Engine = function() {
 	this.createGrid = function() {
 		if (!this.prop.grid)
 			return;
-		var holder = new UIElement();
-		holder.build();
-		holder.width(this.width());
-		holder.height(this.height());
-		holder.setStyle();
+		this.holder = new UIElement();
+		this.holder.build();
+		this.holder.width(this.width());
+		this.holder.height(this.height());
+		this.holder.setStyle();
 
 		var cols = parseInt(this.width() / this.cellSize());
 		var rows = parseInt(this.height() / this.cellSize());
@@ -47,7 +67,7 @@ var Engine = function() {
 			sp.lineStyle();
 			sp.drawRect(currentCol * this.cellSize(), currentRow * this.cellSize(), this.cellSize(), this.cellSize(), null);
 			sp.setStyle();
-			holder.addChild(sp);
+			this.holder.addChild(sp);
 			sp.arrange();
 			sp.display.id = this.prop.gridCellId + currentCol + "_" + currentRow;
 			this.prop.gridCellIndex++;
@@ -61,17 +81,100 @@ var Engine = function() {
 
 			}
 		}
-		holder.arrange();
-		document.body.appendChild(holder.display);
+		this.holder.arrange();
+
+		this.createLayers();
+
+		
+		this.container().appendChild(this.holder.display);
 		//Event.dispatch(this, this.event.READY);
 	};
-	this.setCell = function(x, y, color) {
+
+	this.createLayers = function() {
+		var layer = new UIElement();
+		layer.build();
+		layer.width(this.width());
+		layer.height(this.height());
+		layer.setStyle();
+		layer.arrange();
+		layer.display.id=this.prop.layer.bgId;
+		this.holder.addChild(layer);
 		
+		layer = new UIElement();
+		layer.build();
+		layer.width(this.width());
+		layer.height(this.height());
+		layer.setStyle();
+		layer.arrange();
+		layer.display.id=this.prop.layer.character;
+		this.holder.addChild(layer);
+		
+		layer = new UIElement();
+		layer.build();
+		layer.width(this.width());
+		layer.height(this.height());
+		layer.setStyle();
+		layer.arrange();
+		layer.display.id=this.prop.layer.front;
+		this.holder.addChild(layer);
+		
+	};
+	this.addToBackgroundLayer=function(obj)
+	{
+		var l = document.getElementById(this.prop.layer.bgId);
+		if(obj.display)
+		{
+			l.appendChild(obj.display);
+		}else{
+			l.appendChild(obj);
+		}
+	};
+	this.addToCharacterLayer=function(obj)
+	{
+		var l = document.getElementById(this.prop.layer.character);
+		if(obj.display)
+		{
+			l.appendChild(obj.display);
+		}else{
+			l.appendChild(obj);
+		}
+	};
+	this.addToFrontLayer=function(obj)
+	{
+		var l = document.getElementById(this.prop.layer.front);
+		if(obj.display)
+		{
+			l.appendChild(obj.display);
+		}else{
+			l.appendChild(obj);
+		}
+	};
+	this.setCell = function(x, y, color) {
+
 		var id = this.prop.gridCellId + x + "_" + y;
 		var cell = document.getElementById(id);
 		if (!cell)
 			return;
 		cell.style.backgroundColor = color ? color : "#f00";
+	};
+	this.ignoreBlocks = function(obj, y) {
+		var startX = this.getXCell(y == undefined ? obj.x() : obj);
+		var startY = this.getYCell(y == undefined ? obj.y() : y);
+		var endX = this.getXCell(y == undefined ? (Int(obj.x()) + Int(obj.width())) : obj);
+		var endY = this.getYCell(y == undefined ? (Int(obj.y()) + Int(obj.height())) : y);
+		var end = false;
+		var cX = startX;
+		while (!end) {
+			this.setIgnoreXY(cX, startY);
+
+			cX++;
+			if (cX >= endX) {
+				cX = startX;
+				startY++;
+			}
+			if (startY >= endY)
+				end = true;
+		}
 	};
 	this.addObstacle = function(obj, y) {
 		var startX = this.getXCell(y == undefined ? obj.x() : obj);
@@ -80,23 +183,25 @@ var Engine = function() {
 		var endY = this.getYCell(y == undefined ? (Int(obj.y()) + Int(obj.height())) : y);
 		var end = false;
 		var cX = startX;
-		this.astar.setblock({
-			x : startX,
-			y : startY
-		}, {
-			x : endX,
-			y : endY
-		}, true, this.astar);
+		// this.astar.setblock({
+			// x : startX,
+			// y : startY
+		// }, {
+			// x : endX,
+			// y : endY
+		// }, true, this.astar);
 		while (!end) {
+			console.log(cX,startY,endX,endY);
 			this.setOccupiedXY(cX, startY);
-			
+			this.astar.setCell(startY,cX,true);
 			cX++;
+			if ( startY >= endY)
+				end = true;
 			if (cX >= endX) {
 				cX = startX;
 				startY++;
 			}
-			if (startY >= endY)
-				end = true;
+			
 		}
 		delete startX;
 		delete startY;
@@ -109,6 +214,11 @@ var Engine = function() {
 		if (!this.prop.occupiedXY[x])
 			this.prop.occupiedXY[x] = [];
 		this.prop.occupiedXY[x][y] = x + "," + y;
+	};
+	this.setIgnoreXY = function(x, y) {
+		if (!this.prop.ignoreCells[x])
+			this.prop.ignoreCells[x] = [];
+		this.prop.ignoreCells[x][y] = x + "," + y;
 	};
 	this.getOccupiedXY = function(x, y) {
 		var startX;
@@ -148,9 +258,9 @@ var Engine = function() {
 		var startY = this.getYCell(obj.y());
 		var endX = this.getXCell(x);
 		var endY = this.getYCell(y);
-		this.setCell(startX,startY, "purple");
-			this.setCell(endX, endY, "yellow");
-		this.astar.search(startX, startY, endX, endY);
+		this.setCell(startX, startY, "purple");
+		this.setCell(endX, endY, "yellow");
+		return this.astar.search(startX, startY, endX, endY);
 
 		// this.drawPath(paths);
 	};
@@ -216,7 +326,7 @@ var Engine = function() {
 		},
 		opencell : function(p, cost, prev) {
 
-			if (!p||p.blocked)
+			if (!p || p.blocked)
 				return null;
 
 			if (prev && prev.prev && !prev.equal(this.start)) {
@@ -252,7 +362,8 @@ var Engine = function() {
 			}
 			if (n >= this.opened.length)
 				this.opened[n] = p;
-				if(!this.grid[p.y])return null;
+			if (!this.grid[p.y])
+				return null;
 			this.grid[p.y][p.x] = p;
 			this.last = p;
 			//if(!p.equal(this.start)) this.parent.setCell(p.x,p.y);
@@ -271,7 +382,7 @@ var Engine = function() {
 				this.opencell(this.grid[p.y][p.x - (-1)], cost, p);
 		},
 		search : function(sx, sy, tx, ty) {
-			
+
 			var best;
 			var n = 0;
 			this.setstart(new this.pos(sx, sy));
@@ -301,9 +412,13 @@ var Engine = function() {
 				console.log("No route found");
 				return;
 			}
-
+			var posArray = [];
 			/* Find way back */
 			while (!best.equal(this.start)) {
+				posArray.push({
+					x : best.x * this.parent.cellSize(),
+					y : best.y * this.parent.cellSize()
+				});
 				this.parent.setCell(best.x, best.y, "#00f");
 
 				best = best.prev;
@@ -313,15 +428,18 @@ var Engine = function() {
 					break;
 				}
 			}
-			return best;
+			if (posArray)
+				posArray.reverse();
+			return posArray;
 		},
-		setCell : function(y, x) {
+		setCell : function(y, x,blocked) {
+			if(!this.grid[y])return;
 			this.grid[y][x] = {};
 			this.grid[y][x].cost = 0;
 			this.grid[y][x].totalcost = 0;
 			this.grid[y][x].prev = null;
 			this.grid[y][x].closed = false;
-			this.grid[y][x].blocked = false;
+			this.grid[y][x].blocked = blocked?true:false;
 			this.grid[y][x].x = x;
 			this.grid[y][x].y = y;
 			this.grid[y][x].str = function() {
@@ -330,6 +448,7 @@ var Engine = function() {
 			this.grid[y][x].equal = function(p) {
 				return this.x == p.x && this.y == p.y;
 			}
+			if(blocked)this.parent.setCell(x, y, "#f00");
 		},
 		setblock : function(p1, p2, block, parent) {
 
@@ -338,9 +457,9 @@ var Engine = function() {
 					if (!parent.grid[y] || !parent.grid[y][x])
 						return;
 					if (block) {
-						
+
 						//setcolor(this.grid[y][x], blocked_color);
-						parent.parent.setCell(x, y,"#f00");
+						parent.parent.setCell(x, y, "#f00");
 						parent.grid[y][x].blocked = true;
 					} else {
 						//setcolor(this.grid[y][x], nothing_color);
@@ -352,8 +471,7 @@ var Engine = function() {
 		},
 		wipe : function() {
 			var y, x;
-
-
+			if(!this.parent||!this.start)return;
 			this.opened = [];
 
 			for ( y = 0; y < this.rows; ++y) {
@@ -364,12 +482,13 @@ var Engine = function() {
 					this.grid[y][x].closed = false;
 
 					if (this.grid[y][x].blocked)
-					this.parent.setCell(x, y, "#f00");
-						
-					else
+						this.parent.setCell(x, y, "#f00");
+					
+else
 						this.parent.setCell(x, y, "#fff");
 				}
 			}
+			
 			this.parent.setCell(this.start.x, this.start.y, "none");
 			this.parent.setCell(this.target.x, this.target.y, "none");
 		},

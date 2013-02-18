@@ -5,8 +5,6 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
-		<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
-		<script src="video.js"></script>
 		<!-- <script type="text/javascript" src="../release/toolkitMax-v1001.js"></script> -->
 		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
@@ -38,7 +36,6 @@
 				overflow: hidden;
 				background-color: #ccc;
 			}
-			
 
 		</style>
 		<script type="text/javascript">
@@ -48,6 +45,7 @@
 			var sy;
 			var px;
 			var py;
+			var move;
 			function onLoad() {
 
 				game = new Engine();
@@ -57,83 +55,112 @@
 				game.showGrid(true);
 				//Event.addListener(game,game.event.READY,addObstacles);
 				game.init();
-				
-				
+
 				createObj();
-				createObj();
-				createObj();
-				createObj();
-				
+				//createObj();
+				//createObj();
+				//createObj();
+
 				//document.body.appendChild(obj.display);
-				
-				
-				
+
 				man = new Sprite();
 				man.build();
-				man.drawCircle(250,250,35,"#0f0");
+				man.drawCircle(250, 250, 35, "#0f0");
 				man.setStyle();
 				man.arrange();
-				document.body.appendChild(man.display);
+				game.addToCharacterLayer(man);
 				
-				game.findPathTo(man,300,1);
 				
+				var wall= new Sprite();
+				wall.build();
+				wall.drawRect(30, 30, 100,100, "yellow");
+				wall.setStyle();
+				wall.arrange();
+				game.addToBackgroundLayer(wall);
+				
+				
+				wall= new Sprite();
+				wall.build();
+				wall.drawCircle(330, 330, 60, "purple");
+				wall.setStyle();
+				wall.arrange();
+				game.addToFrontLayer(wall);
+				
+
+				//game.findPathTo(man, 300, 1);
+
 				Utensil.addListener(window, "resize", onResize);
-				Utensil.addListener(man.display, "mousedown", onMouseDown);
+				//Utensil.addListener(man.display, "mousedown", onMouseDown);
+				if(isTouchDevice())
+				{
+					document.addEventListener("touchstart", onMouseUp, false);
+					
+				}else{
 				Utensil.addListener(document, "mouseup", onMouseUp);
+					
+				}
 			}
-			function addObstacles()
-			{
-				
-			
+
+			function addObstacles() {
+
 			}
+
 			function onMouseDown(event) {
 				sx = man.x();
 				sy = man.y();
-			Utensil.addListener(document, "mousemove", onMouseMove);
+				Utensil.addListener(document, "mousemove", onMouseMove);
 			}
+
 			function onMouseUp(event) {
-			Utensil.removeListener(document, "mousemove", onMouseMove);
-				if(game.getOccupiedXY(man))
-				{
-					TweenLite.killTweensOf(man);
-					TweenLite.to(man,0.5,{x:sx,y:sy});
-					
-				}else{
-					px=Utensil.mouseX(document.body,event);
-					py=Utensil.mouseY(document.body,event);
+				//Utensil.removeListener(document, "mousemove", onMouseMove);
+				
+					px = Utensil.mouseX(document.body, event);
+					py = Utensil.mouseY(document.body, event);
 					game.astar.wipe();
+					move = null;
+					move = (game.findPathTo(man, px, py));
+					nextMove(0);
+				
+			}
+
+			function nextMove(index) {
+				if (move && move[index]) {
 					TweenLite.killTweensOf(man);
-					TweenLite.to(man,0.5,{x:sx,y:sy,onComplete:setNewPath});
+					TweenLite.to(man, 0.5, {
+						x : move[index].x,
+						y : move[index].y,
+						onComplete : nextMove,
+						onCompleteParams : [index + 1]
+					})
+
 				}
 			}
-			function setNewPath(event)
-			{
-				
-				game.findPathTo(man,px,py);
-				TweenLite.killTweensOf(man);
-					TweenLite.to(man,0.5,{x:px,y:py});
-			}
+
 			function onMouseMove(event) {
-			
-			man.x(Utensil.mouseX(document.body,event));
-			man.y(Utensil.mouseY(document.body,event));
+
+				man.x(Utensil.mouseX(document.body, event));
+				man.y(Utensil.mouseY(document.body, event));
 
 			}
-			function createObj()
-			{
-				var randomX = Math.floor(Math.random() * (499 - 0 + 1)) + 0;
-				var randomY = Math.floor(Math.random() * (499 - 0 + 1)) + 0;
-				
+
+			function isTouchDevice() {
+				return "ontouchstart" in window;
+			}
+
+			function createObj() {
+				var randomX = Math.floor(Math.random() * (499 - 1 + 1)) + 1;
+				var randomY = Math.floor(Math.random() * (499 - 1 + 1)) + 1;
+
 				var obj = new Sprite();
 				obj.build();
-				obj.drawRect(randomX,randomY,35,35,"#f00");
+				obj.drawRect(randomX, randomY,150, 35, "#f00");
 				obj.setStyle();
 				obj.arrange();
 				game.addObstacle(obj);
+				delete obj;
 			}
-			function onResize() {
 
-			
+			function onResize() {
 
 			}
 		</script>
