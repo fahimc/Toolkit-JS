@@ -5,6 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<!-- <script type="text/javascript" src="../release/toolkitMax-v1001.js"></script> -->
 		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
@@ -46,74 +47,120 @@
 			var px;
 			var py;
 			var move;
+			var high;
 			function onLoad() {
 
 				game = new Engine();
 				game.width(500);
 				game.height(500);
 				game.cellSize(50);
-				game.showGrid(true);
+				//game.showGrid(true);
 				//Event.addListener(game,game.event.READY,addObstacles);
 				game.init();
+				
+				var bg = new Sprite();
+				bg.build();
+				bg.drawRect(0, 0, 500,500, "#85A151");
+				bg.setStyle();
+				bg.arrange();
+				game.addToBackgroundLayer(bg);
 
 				createObj();
-				//createObj();
-				//createObj();
-				//createObj();
-
+				createObj();
+				createObj();
+				createObj();
+				createObj();
+				createObj();
+				createObj();
+				createObj();
+				createObj();
+				
+				
+				
+				
 				//document.body.appendChild(obj.display);
-
-				man = new Sprite();
+				var img=new Image();
+					img.src="images/game/owl.png";
+				man = new UIElement();
 				man.build();
-				man.drawCircle(250, 250, 35, "#0f0");
+				man.x(250)
+				man.y(250)
+				man.width(50);
+				man.height(50);
 				man.setStyle();
 				man.arrange();
+				man.addChild(img);
 				game.addToCharacterLayer(man);
 				
 				
-				var wall= new Sprite();
-				wall.build();
-				wall.drawRect(30, 30, 100,100, "yellow");
-				wall.setStyle();
-				wall.arrange();
-				game.addToBackgroundLayer(wall);
+			
+				
+				trees();
 				
 				
-				wall= new Sprite();
-				wall.build();
-				wall.drawCircle(330, 330, 60, "purple");
-				wall.setStyle();
-				wall.arrange();
-				game.addToFrontLayer(wall);
-				
-
-				//game.findPathTo(man, 300, 1);
+				high = new Sprite();
+				high.build();
+				high.drawCircle(0, 0, 25, "yellow");
+				high.alpha(0.5);
+				high.setStyle();
+				high.arrange();
+				game.addToFrontLayer(high);
 
 				Utensil.addListener(window, "resize", onResize);
 				//Utensil.addListener(man.display, "mousedown", onMouseDown);
 				if(isTouchDevice())
 				{
 					document.addEventListener("touchstart", onMouseUp, false);
+					document.addEventListener("touchend", onMouseEnd, false);
 					
 				}else{
-				Utensil.addListener(document, "mouseup", onMouseUp);
-					
+					Utensil.addListener(document, "mouseup", onMouseUp);
+					Utensil.addListener(game.holder.display, "mousemove", onMouseMove);
+						
 				}
 			}
-
-			function addObstacles() {
-
+			function trees()
+			{
+				
+				for(var a=0;a<500;a++)
+				{
+					addTrees(a,0);
+					
+					addTrees(a,450);
+					addTrees(0,a);
+					addTrees(450,a);
+					a+=49;
+				}
+				
+			}
+			function addTrees(x,y) {
+					var img=new Image();
+					img.src="images/game/tree.png";
+					obj = new UIElement();
+					obj.build();
+					obj.x(x);
+					obj.y(y);
+					obj.width(50);
+					obj.height(50);
+					obj.setStyle();
+					obj.arrange();
+					obj.addChild(img);
+					game.addToFrontLayer(obj);
+					game.addObstacle(obj);
 			}
 
-			function onMouseDown(event) {
-				sx = man.x();
-				sy = man.y();
-				Utensil.addListener(document, "mousemove", onMouseMove);
+			
+			function onMouseEnd(event)
+			{
+				high.alpha(0);
 			}
-
 			function onMouseUp(event) {
 				//Utensil.removeListener(document, "mousemove", onMouseMove);
-				
+				var x = game.getXCell(Utensil.mouseX(document.body, event)) * game.cellSize();
+				var y = game.getXCell(Utensil.mouseY(document.body, event)) * game.cellSize();
+				high.x(x);
+				high.y(y);
+					high.alpha(0.5);
 					px = Utensil.mouseX(document.body, event);
 					py = Utensil.mouseY(document.body, event);
 					game.astar.wipe();
@@ -137,9 +184,10 @@
 			}
 
 			function onMouseMove(event) {
-
-				man.x(Utensil.mouseX(document.body, event));
-				man.y(Utensil.mouseY(document.body, event));
+				var x = game.getXCell(Utensil.mouseX(document.body, event)) * game.cellSize();
+				var y = game.getXCell(Utensil.mouseY(document.body, event)) * game.cellSize();
+				high.x(x);
+				high.y(y);
 
 			}
 
@@ -148,15 +196,27 @@
 			}
 
 			function createObj() {
-				var randomX = Math.floor(Math.random() * (499 - 1 + 1)) + 1;
-				var randomY = Math.floor(Math.random() * (499 - 1 + 1)) + 1;
-
-				var obj = new Sprite();
+				var randomX = Math.floor(Math.random() * (450 - 50 + 1)) +50;
+				var randomY = Math.floor(Math.random() * (450 - 50 + 1)) + 50;
+				
+				var randomW = Math.floor(Math.random() * (50 - 50 + 1)) + 50;
+				var randomH = Math.floor(Math.random() * (50 - 50 + 1)) + 50;
+				
+				var x = game.getXCell(randomX) * game.cellSize();
+				var y = game.getXCell(randomY) * game.cellSize();
+				var img=new Image();
+					img.src="images/game/stump.png";
+				var obj = new UIElement();
 				obj.build();
-				obj.drawRect(randomX, randomY,150, 35, "#f00");
+				obj.x(x)
+				obj.y(y)
+				obj.width(randomW)
+				obj.height(randomH)
 				obj.setStyle();
 				obj.arrange();
+				obj.addChild(img);
 				game.addObstacle(obj);
+				game.addToBackgroundLayer(obj);
 				delete obj;
 			}
 
