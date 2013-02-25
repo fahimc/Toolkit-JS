@@ -5,9 +5,10 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
-		<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
-		<script src="video.js"></script>
 		<!-- <script type="text/javascript" src="../release/toolkitMax-v1001.js"></script> -->
+		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
+		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
+		<script type="text/javascript" src="../lib/com/greensock/TweenLite.js"></script>
 		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
 		<script type="text/javascript" src="../lib/com/utensil/UtensilLight.js"></script>
 		<script type="text/javascript" src="../lib/com/wezside/event/Event.js"></script>
@@ -31,60 +32,9 @@
 			}
 			body {
 				overflow: hidden;
-				background-color: #ccc;
-			}
-			#holder, #videoplayer {
-				position: relative;
-			}
-			#container {
-				position: absolute;
-				left: 0px;
-			}
-			.scrollgeneric {
-				line-height: 1px;
-				font-size: 1px;
-				position: absolute;
-				top: 0;
-				left: 0;
+				background-color: #0791a4;
 			}
 
-			.vscrollerbase {
-				width: 10px;
-				background-color: #fff;
-			}
-			.vscrollerbar {
-				width: 5px;
-				background-color: #666;
-				-moz-border-radius: 10px; /* Firefox */
-				-webkit-border-radius: 10px; /* Safari, Chrome */
-				border-radius: 10px; /* CSS3 */
-			}
-			.hscrollerbase {
-				height: 10px;
-				background-color: white;
-			}
-			.hscrollerbar {
-				height: 10px;
-				background-color: black;
-			}
-
-			.scrollerjogbox {
-				width: 10px;
-				height: 10px;
-				top: auto;
-				left: auto;
-				bottom: 0px;
-				right: 0px;
-				background-color: gray;
-			}
-			.scrollTrack {
-				width: 20px;
-				background-color: #000;
-			}
-			.scrollThumb {
-				width: 20px;
-				background-color: #e4e4e4;
-			}
 			.test {
 				background-color: #0f0;
 			}
@@ -92,14 +42,14 @@
 		</style>
 		<script type="text/javascript">
 			var test;
-			var children=[];
-			var first=true;
+			var children = [];
+			var first = true;
 			function onLoad() {
 
 				var bird = new Image();
-				bird.src ="images/bird.png";
+				bird.src = "images/bird.png";
 
-				var test = new MovieClip();
+				test = new MovieClip();
 				test.width(184);
 				test.height(163);
 				test.build();
@@ -110,14 +60,46 @@
 
 				test.arrange();
 				test.attach(bird);
-				test.gotoAndPlay(0,4,true);
+				test.gotoAndPlay(1, 4, true);
 				
+				var bird = new Image();
+				bird.src = "images/bird.png";
+				
+				var test2 = new MovieClip();
+				test2.width(184);
+				test2.height(163);
+				test2.build();
+				test2.setStyle();
+				test2.x(300);
+				test2.y(100);
+				test2.frameRate=300;
+				document.body.appendChild(test2.display);
+
+				test2.arrange();
+				test2.attach(bird);
+				test2.gotoAndPlay(1, 4, true);
+
+				moveTo();
+
 				Utensil.addListener(window, "resize", onResize);
 			}
 
-			function onResize() {
+			function moveTo() {
+				var min = -10;
+				var maxW = Utensil.stageWidth();
+				var maxH = Utensil.stageHeight();
+				// and the formula is:
+				var randomX = Math.floor(Math.random() * (maxW - min + 1)) + min;
+				var randomY = Math.floor(Math.random() * (maxH - min + 1)) + min;
+				TweenLite.killTweensOf(test);
+				TweenLite.to(test, 1, {
+					delay:1,
+					x : randomX,
+					y : randomY,onComplete:moveTo
+				});
+			}
 
-				
+			function onResize() {
 
 			}
 		</script>
