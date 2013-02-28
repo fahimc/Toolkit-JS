@@ -1,4 +1,4 @@
-![toolkit js logo](http://i1057.photobucket.com/albums/t386/Fahim_Chowdhury/ToolkitJS/c8d41c23.jpg)  
+![toolkit js logo](http://8fc.co.uk/imagebucket/toolkitjs_logo.gif)  
 ##Welcome to the Toolkit-JS
 This is a cross browser JS OOP Architecture. This was based on [wezside toolkit in AS3](https://github.com/wezside/Toolkit).  
 
