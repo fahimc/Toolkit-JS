@@ -143,13 +143,13 @@
 				test.layout().horizontalGap = 10;
 				test.layout(new ScrollLayout());
 				test.layout().scrollHeight = 500;
-				test.width(700);
-				test.height(500);
+				test.width(Utensil.stageWidth());
+				test.height(Utensil.stageHeight());
 				test.build();
 				test.className("test")
 				test.setStyle();
-				test.x(100);
-				test.y(100);
+				test.x(0);
+				test.y(0);
 				document.body.appendChild(test.display);
 
 				test.arrange();
@@ -158,9 +158,9 @@
 			}
 
 			function onResize() {
-
+				test.layout().scrollHeight = Utensil.stageHeight();
+				test.width(Utensil.stageWidth());
 				test.height(Utensil.stageHeight());
-				test.width(700);
 				test.arrange();
 
 			}
