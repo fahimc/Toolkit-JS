@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>test</title>
+		<meta name="author" content="Fahim" />
+		<link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
+		<script src="video.js"></script>
+		<!-- <script type="text/javascript" src="../release/toolkitMax-v1001.js"></script> -->
+		<script type="text/javascript" src="lib/greensock/easing/EasePack.js"></script>
+		<script type="text/javascript" src="lib/greensock/plugins/CSSPlugin.js"></script>
+		<script type="text/javascript" src="lib/greensock/TweenLite.js"></script>
+		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
+		<script type="text/javascript" src="../lib/com/utensil/UtensilLight.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/event/Event.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/Layout.js"></script>
+		<script type="text/javascript" src="../src/com/decorator/GridLayout.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/ScrollLayout.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/display/DisplayObject.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/UIElement.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/Sprite.js"></script>
+		<!-- Date: 2012-08-28 -->
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			body {
+				overflow: hidden;
+				background-color: #000;
+			}
+
+		</style>
+		<script type="text/javascript">
+			var gun;
+			var speed = 35;
+			var bullets = [];
+			var enemies = [];
+			var maxEnemies = 10;
+			var reduce = false;
+			var bg;
+			var left;
+			var right;
+			function onLoad() {
+				bg = new Image();
+				bg.src = "images/bg.png";
+				bg.style.width = Utensil.stageWidth() + "px";
+				bg.style.height = Utensil.stageHeight() + "px";
+				document.body.appendChild(bg);
+
+				var img = new Image();
+				img.src = "images/ship.png";
+				gun = new UIElement();
+				gun.build();
+				gun.setStyle();
+				gun.width(83);
+				gun.height(94);
+				gun.addChild(img);
+				gun.arrange();
+				gun.x(Utensil.stageWidth() * 0.5);
+				gun.y(Utensil.stageHeight() - gun.height());
+				document.body.appendChild(gun.display);
+
+				Utensil.addListener(window, "resize", onResize);
+				Utensil.addListener(document, "keydown", onKeyDown);
+				Utensil.addListener(document, "keyup", onKeyUp);
+
+				setInterval(onEnterFrame, 100);
+				createEnemy(true);
+				
+				
+				var lm = new Image();
+				lm.src = "images/left.png";
+				left = new UIElement();
+				left.build();
+				left.setStyle();
+				left.width(60);
+				left.height(60);
+				left.addChild(lm);
+				left.x(10);
+				left.y(Utensil.stageHeight()-70);
+				left.arrange();
+				document.body.appendChild(left.display);
+				
+				var rm = new Image();
+				rm.src = "images/right.png";
+				right = new UIElement();
+				right.build();
+				right.setStyle();
+				right.width(60);
+				right.height(60);
+				right.addChild(rm);
+				right.x(Utensil.stageWidth()-70);
+				right.y(Utensil.stageHeight()-70);
+				right.arrange();
+				document.body.appendChild(right.display);
+				
+				Utensil.addListener(left, "mousedown", onKeyUp);
+				Utensil.addListener(right, "keyup", onKeyUp);
+			}
+
+			function onKeyUp(event) {
+				reduce = true;
+
+			}
+
+			function onKeyDown(event) {
+				reduce = false;
+				speed += 5;
+				if (event.keyCode == 40) {
+					moveShip(gun.x(), gun.y() + speed);
+				}
+				if (event.keyCode == 38) {
+					moveShip(gun.x(), gun.y() - speed);
+				}
+				if (event.keyCode == 39) {
+					moveShip(gun.x() + speed, gun.y());
+				}
+				if (event.keyCode == 37) {
+					moveShip(gun.x() - speed, gun.y());
+				}
+				if (event.keyCode == 32) {
+					shoot();
+				}
+				
+				
+			}
+
+			function moveShip(x, y) {
+				TweenLite.killTweensOf(gun);
+				TweenLite.to(gun, 0.5, {
+					x : x,
+					y : y
+				});
+			}
+
+			function shoot() {
+				var bullet = new Sprite();
+				bullet.build();
+				bullet.drawRect(0, 0, 2, 6, "#f00");
+				bullet.setStyle();
+				bullet.arrange();
+				bullet.x(gun.x() + ((gun.width() * 0.5) - bullet.width()));
+				bullet.y(gun.y());
+				document.body.appendChild(bullet.display);
+				bullets.push(bullet);
+			}
+
+			function createEnemy(override) {
+				var rand = Math.floor(Math.random() * (50 - 1 - 1 + 1)) + 1;
+				if ((rand > 1 || enemies.length >= maxEnemies) && !override)
+					return;
+				var randomX = Math.floor(Math.random() * (Utensil.stageWidth() - 50 - 50 + 1)) + 50;
+
+				var img = new Image();
+				img.src = "images/enemy.png";
+
+				var enemy = new UIElement();
+				enemy.build();
+				enemy.width(50);
+				enemy.height(44);
+				enemy.setStyle();
+				enemy.addChild(img);
+				enemy.arrange();
+				enemy.x(randomX);
+				enemy.y(50);
+				document.body.appendChild(enemy.display);
+				enemies.push(enemy);
+			}
+
+			function onEnterFrame() {
+				if (reduce && speed > 5)
+					speed -= 0.5;
+				for (var a = 0; a < bullets.length; a++) {
+					var bullet = bullets[a];
+					bullet.y(bullet.y() - 10);
+
+					for (var b = 0; b < enemies.length; b++) {
+						if (bullet.hitTestObject(enemies[b])) {
+							removeEnemy(b);
+							removeBullet(a);
+						}
+					}
+
+					if (bullet && bullet.y() < 0) {
+						removeBullet(a);
+					}
+				}
+				createEnemy();
+				for (var a = 0; a < enemies.length; a++) {
+					var enemy = enemies[a];
+					enemy.y(enemy.y() + 3);
+					if (enemy.y() > Utensil.stageHeight()) {
+						removeEnemy(a);
+					}
+				}
+			}
+
+			function removeEnemy(index) {
+				document.body.removeChild(enemies[index].display);
+				delete enemies[index];
+				enemies.splice(index, 1);
+			}
+
+			function removeBullet(index) {
+				document.body.removeChild(bullets[index].display);
+				delete bullets[index];
+				bullets.splice(index, 1);
+			}
+
+			function onResize() {
+				bg.style.width = Utensil.stageWidth() + "px";
+				bg.style.height = Utensil.stageHeight() + "px";
+				gun.x(Utensil.stageWidth() * 0.5);
+				gun.y(Utensil.stageHeight() - gun.height());
+				left.y(Utensil.stageHeight()-70);
+				right.x(Utensil.stageWidth()-70);
+				right.y(Utensil.stageHeight()-70);
+			}
+		</script>
+	</head>
+	<body onload="onLoad()">
+
+	</body>
+</html>
