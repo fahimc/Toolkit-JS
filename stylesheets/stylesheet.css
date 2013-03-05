@@ -323,6 +323,10 @@ footer a {
 footer a:hover {
   color: #444;
 }
+#nav
+{
+	text-align:center;
+}
 #nav a
 {
 	min-width: 135px;
