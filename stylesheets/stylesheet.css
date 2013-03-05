@@ -323,6 +323,11 @@ footer a {
 footer a:hover {
   color: #444;
 }
+#nav a
+{
+	display:inline-block;
+	margin-right:20px;
+}
 
 /* MISC */
 .clearfix:after {
