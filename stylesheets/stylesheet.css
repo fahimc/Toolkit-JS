@@ -327,6 +327,11 @@ footer a:hover {
 {
 	display:inline-block;
 	margin-right:20px;
+	font-size: 32px;
+	margin-bottom:20px;
+	padding: 10px 20px 10px 20px;
+	background-color:#ccc;
+	color:#e4e4e4;
 }
 
 /* MISC */
