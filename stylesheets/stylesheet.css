@@ -325,6 +325,7 @@ footer a:hover {
 }
 #nav a
 {
+	min-width: 135px;
 	display:inline-block;
 	margin-right:20px;
 	font-size: 32px;
