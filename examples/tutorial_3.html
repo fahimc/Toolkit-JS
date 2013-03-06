@@ -36,7 +36,7 @@
 				background-color: #0791a4;
 			}
 
-			.test {
+			.test{
 				background-color: #0f0;
 			}
 
@@ -44,14 +44,37 @@
 		<script type="text/javascript">
 		
 			function onLoad() {
-					var car = new Car();
-					console.log(car.wheels);
-					
-					var bike = new Bike();
-					console.log(bike.wheels);
-
+				// creating and using a UIELement
+				// Create a CSS Class
+				//Create a instance of UIElement
+				var element = new UIElement();
+				// you need to call the build method after you create the instance
+				element.build();
+				// set the class name
+				element.className('test');
+				// give the element a width and height
+				element.width(100);
+				element.height(100);
+				// give the element x and y positions
+				element.x(80);
+				element.y(200);
+				// now you call the setStyle function so it can apply the style to the element.
+				element.setStyle();
 				
-
+				//add the element to the body. The DOM object is called display within the UIElement
+				
+				document.body.appendChild(element.display);
+				
+				// now you have to call arrange to arrange object within the element. in this example it is not required.
+				
+				element.arrange();
+				
+				// now we will log the x position of the element.
+				console.log(element.x());
+				
+				//lets see the result....
+				
+				//the x position reads as 80.
 			}
 
 	
@@ -61,4 +84,38 @@
 	<body onload="onLoad()">
 
 	</body>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </html>

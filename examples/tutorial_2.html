@@ -44,13 +44,71 @@
 		<script type="text/javascript">
 		
 			function onLoad() {
-					var car = new Car();
-					console.log(car.wheels);
 					
-					var bike = new Bike();
-					console.log(bike.wheels);
-
+				// create a Class called View
+				var View = function(){};
 				
+				//Create a method within this class
+				// add a wrapper
+				(function(){
+					var _ = View.prototype;
+					
+					//create the method
+					_.showMessage = function()
+					{
+						// when this function is called it will log this message
+						console.log("show Message");
+					}
+				})();
+				
+				// create another Class which extends View
+				
+				var MainView = function(){
+					//create a showMessage method. This will override the one in view.
+					this.showMessage=function()
+					{
+						// now call super to execute the View method
+						Class._super(this,"showMessage");
+						// the first parameter is the class and the second is the function name.
+						// now lets add another console log here.
+						console.log("class override and super is called");
+					}
+					
+				};
+				
+				//extend the class like so
+				Class.extend(MainView,View);
+				
+				// create an instance of MainView
+				
+				var mainView = new MainView();
+				
+				//call the method
+				
+				mainView.showMessage();
+				
+				
+				// here is the result
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 			}
 
