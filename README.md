@@ -1,6 +1,6 @@
 ![toolkit js logo](http://8fc.co.uk/imagebucket/toolkitjs_logo.gif)  
 ##Welcome to the Toolkit-JS
-This is a cross browser JS OOP Architecture. This was based on [wezside toolkit in AS3](https://github.com/wezside/Toolkit).  
+This is a cross browser JS OOP Architecture. This was based on AS3 and [wezside toolkit](https://github.com/wezside/Toolkit).  
 
 Contain These Libraries:  
 [Utensil](https://github.com/fahimc/Utensil/)
@@ -27,7 +27,7 @@ Have a look at the different layout managers such as VerticalLayout or Horizonta
     document.body.appendChild(view.display);
     view.arrange();
 
-#Content 
+#Contents 
 [0. Project Structure](https://github.com/fahimc/Toolkit-JS/wiki/0.-Project-Structure)  
 [1. Setting up the Main JS File](https://github.com/fahimc/Toolkit-JS/wiki/1.-Setting-up-the-Main-JS-File)  
 [2. Resource Manager](https://github.com/fahimc/Toolkit-JS/wiki/2.-Resource-Manager)  
@@ -39,12 +39,18 @@ Have a look at the different layout managers such as VerticalLayout or Horizonta
 [8. Styling UIElements](https://github.com/fahimc/Toolkit-JS/wiki/8.-Styling-UIElements)  
 [9. Using ScrollLayout](https://github.com/fahimc/Toolkit-JS/wiki/9.-Using-ScrollLayout)  
 [10. Applying A Grid Layout](https://github.com/fahimc/Toolkit-JS/wiki/a_10.-Applying-A-Grid-Layout)  
+[11. Creating a MovieClip](https://github.com/fahimc/Toolkit-JS/wiki/a_11.-MovieClip-Example)  
+[12. Adding an Event Listener](https://github.com/fahimc/Toolkit-JS/wiki/a_12.-Adding-an-Event-Listener)  
+[13. Dispatching a Custom Event](https://github.com/fahimc/Toolkit-JS/wiki/a_13.-Dispatching-a-Custom-Event)  
 
 ---
-#API
+#API's
 
 [DisplayObject](https://github.com/fahimc/Toolkit-JS/wiki/DisplayObject)  
 [UIElement](https://github.com/fahimc/Toolkit-JS/wiki/API---UIElement-Method-List)  
 [Label](https://github.com/fahimc/Toolkit-JS/wiki/API-Label-Method-List)   
 [Button](https://github.com/fahimc/Toolkit-JS/wiki/API-Button-Method-List)  
-[Layout](https://github.com/fahimc/Toolkit-JS/wiki/API-Layout-Method-List) 
+[Layout](https://github.com/fahimc/Toolkit-JS/wiki/API-Layout-Method-List)  
+[Sprite](https://github.com/fahimc/Toolkit-JS/wiki/API-Sprite)  
+[MovieClip](https://github.com/fahimc/Toolkit-JS/wiki/API-MovieClip)    
+[Event](https://github.com/fahimc/Toolkit-JS/wiki/API-Event)
