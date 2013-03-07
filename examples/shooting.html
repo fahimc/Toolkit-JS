@@ -65,6 +65,7 @@
 				bg.src = "images/bg.png";
 				bg.style.width = Utensil.stageWidth() + "px";
 				bg.style.height = Utensil.stageHeight() + "px";
+				bg.ondragstart = function() { return false; };
 				document.body.appendChild(bg);
 
 				var img = new Image();
@@ -84,7 +85,7 @@
 				Utensil.addListener(document, "keydown", onKeyDown);
 				Utensil.addListener(document, "keyup", onKeyUp);
 
-				setInterval(onEnterFrame, 100);
+				setInterval(onEnterFrame, 50);
 				createEnemy(true);
 				
 				
@@ -124,7 +125,7 @@
 			}
 			function onKeyUp(event) {
 				reduce = true;
-
+				speed = 15;
 			}
 
 			function onKeyDown(event) {
@@ -170,7 +171,7 @@
 			}
 
 			function createEnemy(override) {
-				var rand = Math.floor(Math.random() * (50 - 1 - 1 + 1)) + 1;
+				var rand = Math.floor(Math.random() * (20 - 1 - 1 + 1)) + 1;
 				if ((rand > 1 || enemies.length >= maxEnemies) && !override)
 					return;
 				var randomX = Math.floor(Math.random() * (Utensil.stageWidth() - 50 - 50 + 1)) + 50;
@@ -192,8 +193,8 @@
 			}
 
 			function onEnterFrame() {
-				if (reduce && speed > 5)
-					speed -= 0.5;
+				// if (reduce && speed > 5)
+					//speed -= 0.5;
 				for (var a = 0; a < bullets.length; a++) {
 					var bullet = bullets[a];
 					bullet.y(bullet.y() - 10);
@@ -212,7 +213,8 @@
 				createEnemy();
 				for (var a = 0; a < enemies.length; a++) {
 					var enemy = enemies[a];
-					enemy.y(enemy.y() + 3);
+					enemy.y(enemy.y() + 15);
+					
 					if (enemy.y() > Utensil.stageHeight()) {
 						removeEnemy(a);
 					}
