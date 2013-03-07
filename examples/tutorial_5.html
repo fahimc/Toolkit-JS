@@ -5,6 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
+		<meta http-equiv="refresh" content="1">
 		<!-- <script type="text/javascript" src="../release/toolkitMax-v1003.js"></script> -->
 		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
@@ -17,6 +18,7 @@
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/ScrollLayout.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/display/DisplayObject.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/UIElement.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/Sprite.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/MovieClip.js"></script><!--  -->
 		<!-- Date: 2012-08-28 -->
 		<style>
@@ -32,7 +34,7 @@
 			}
 			body {
 				overflow: hidden;
-				background-color: #0791a4;
+				background-color: #0fff;
 			}
 
 			.test{
@@ -43,42 +45,34 @@
 		<script type="text/javascript">
 		
 			function onLoad() {
-				// create a horizontal spritesheet like this one.
+				// lets create a Sprite
+				var sprite = new Sprite();
+				// Sprite extends UIElement so you need to call build
+				// setStyle and arrange
+				// remember to put build before you draw a rect or call other 
+				// functions
+				sprite.build();
+				//lets create a rectangle
+				// provide the x,y,width,height and colour
+				// lets add a border
+				// provide the thickness and the colour
+				sprite.lineStyle(3,"#333");
+				// lets create a circle
+				// provide the x, y, radius and the colour.
+				// make it bigger
+				sprite.drawCircle(0,0,150,"#0f0");
 				
-				// create an Image object
-				var bird = new Image();
-				//add the source location of the image
-				bird.src = "images/bird.png"
+				sprite.setStyle();
+				// add the sprite to the body
+				document.body.appendChild(sprite.display);
 				
-				// create an instance of MovieClip
+				// also call the x and y method in the DisplayObject which
+				// Sprite also extends
 				
-				var movieclip = new MovieClip();
-				// set the width and height of your movieclip. this should be the frame size
-				movieclip.width(184);
-				movieclip.height(163);
-				// since the MovieClip Class extends UIElement. You need to call build, setStyle and arrange.
-				movieclip.build();
-				movieclip.setStyle();
-				// set the x and y for your movieclip (optional)
-				movieclip.x(100);
-				movieclip.y(100);
+				sprite.x(100);
+				sprite.y(100);
 				
-				//add it to the body
-				document.body.appendChild(movieclip.display);
-				
-				//arrange
-				movieclip.arrange();
-				// now attach the sprite image object to the movieclip
-				movieclip.attach(bird);
-				
-				// now you can call either gotoAndPlay or gotoAndStop
-				movieclip.gotoAndPlay(0,4,true);
-				// this will start the movieclip at frame index 0 and play each frame
-				// till frame index 4. I've also set loop to true.
-				
-				// lets test it.
-				
-				// you can change the frameRate on each movieclip. Check the Docs.
+				sprite.arrange();
 			}
 
 	
