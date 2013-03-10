@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>test</title>
+		<meta name="author" content="Fahim" />
+		<script type="text/javascript" src="../release/toolkitMax-v1004.js"></script>
+		<!-- <script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
+		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
+		<script type="text/javascript" src="../lib/com/greensock/TweenLite.js"></script>
+		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
+		<script type="text/javascript" src="../lib/com/utensil/UtensilLight.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/event/Event.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/Layout.js"></script>
+		<script type="text/javascript" src="../src/com/decorator/GridLayout.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/ScrollLayout.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/display/DisplayObject.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/UIElement.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/MovieClip.js"></script><!--  -->
+		<script type="text/javascript" src="lib/fahimchowdhury/toolkit/test/View.js"></script><!--  -->
+		<!-- Date: 2012-08-28 -->
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			body {
+				overflow: hidden;
+				background-color: #0791a4;
+			}
+
+			.test {
+				background-color: #0f0;
+			}
+
+		</style>
+		<script type="text/javascript">
+			function onLoad() {
+				var ICommand = {
+					execute : function(a, b) {
+					}
+				};
+				var AddCommand = function() {
+					this.execute = function(a, b) {
+						return a + b;
+					}
+				};
+				Class.implement(AddCommand, ICommand);
+
+				var SubCommand = function() {
+					this.execute = function(a, b) {
+						return a - b;
+					}
+				};
+				Class.implement(SubCommand, ICommand);
+
+				var CommandBus = {
+					action : function(type, a, b) {
+						this.command = null;
+						switch(type) {
+							case 'add':
+								command = new AddCommand();
+								break;
+							case 'subtract':
+								command = new SubCommand();
+								break;
+
+						}
+						return command.execute(a, b);
+						delete this.command;
+					}
+				};
+
+				console.log(CommandBus.action('add', 2, 2));
+				console.log(CommandBus.action('subtract', 2, 2));
+			}
+		</script>
+	</head>
+	<body onload="onLoad()">
+
+	</body>
+</html>
