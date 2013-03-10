@@ -6,7 +6,7 @@ Contain These Libraries:
 [Utensil](https://github.com/fahimc/Utensil/)
 
 #Latest Version  
-[toolkitMax](https://github.com/fahimc/Toolkit-JS/downloads)
+[toolkitMax](https://github.com/fahimc/Toolkit-JS/tree/master/release)
 
 #About  
 With this toolkit you can build extendable objects which are fully inheritable. 
