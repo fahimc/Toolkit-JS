@@ -5,9 +5,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
-		<!-- <meta http-equiv="refresh" content="1"> -->
-		<!-- <script type="text/javascript" src="../release/toolkitMax-v1003.js"></script> -->
-		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
+		<script type="text/javascript" src="../release/toolkitMax-v1004.js"></script>
+		<!-- <script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/TweenLite.js"></script>
 		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
@@ -18,8 +17,9 @@
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/ScrollLayout.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/display/DisplayObject.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/UIElement.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/Sprite.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/MovieClip.js"></script><!--  -->
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/data/iterator/Iterator.js"></script><!--  -->
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/data/collection/Collection.js"></script><!--  -->
 		<!-- Date: 2012-08-28 -->
 		<style>
 			* {
@@ -34,75 +34,47 @@
 			}
 			body {
 				overflow: hidden;
-				background-color: #0fff;
+				background-color: #0791a4;
 			}
 
-			.test{
+			.test {
 				background-color: #0f0;
 			}
 
 		</style>
 		<script type="text/javascript">
-		
 			function onLoad() {
-				// lets create a Sprite
-				var sprite = new Sprite();
-				sprite.build();
-				sprite.drawRect(50,50,150,50,"#f00");
-				sprite.buttonMode(true);
-				sprite.setStyle();
-			
-				document.body.appendChild(sprite.display);
 				
-				sprite.arrange();
+				var arr  =[1,2,3,4,5,6,7];
+				var arrayIterator = new ArrayIterator(arr);
 				
-				Utensil.addListener(sprite.display,"click",onClick);
-			}
-			
-			function onClick(event)
-			{
-				console.log("clicked");
+				while(arrayIterator.hasNext())
+				{
+					var item = arrayIterator.next();
+					console.log(item);
+				}
+				arrayIterator=null;
+				
+				var collection = new Collection();
+				collection.addItem({name:"fahim",age:28});
+				collection.addItem({name:"john"});
+				collection.addItem({name:"adam"});
+				
+				collection.removeItem("name","john");
+				
+				var iterator = collection.iterator();
+				while(iterator.hasNext())
+				{
+					var item = iterator.next();
+					console.log(item);
+				}
+				iterator=null;
+				//console.log(collection.find("age",28));
 			}
 
-	
-			
 		</script>
 	</head>
 	<body onload="onLoad()">
 
 	</body>
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 </html>
