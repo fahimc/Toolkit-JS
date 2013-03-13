@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>test</title>
+		<meta name="author" content="Fahim" />
+		<script type="text/javascript" src="../release/toolkitMax-v1004.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/ui/ContextMenu.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/ui/ContextMenuItem.js"></script>
+		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
+		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
+		<script type="text/javascript" src="../lib/com/greensock/TweenLite.js"></script>
+		<!-- Date: 2012-08-28 -->
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			body {
+				overflow: hidden;
+				background-color: #0791a4;
+			}
+
+			.test {
+				background-color: #0f0;
+			}
+
+		</style>
+		<script type="text/javascript">
+			function onLoad() {
+
+				var contextMenu = new ContextMenu();
+				var item = new ContextMenuItem("ToolkitJS", onClick);
+				var item1 = new ContextMenuItem("Test 1");
+				var item2 = new ContextMenuItem("Test 2");
+				var item3 = new ContextMenuItem("Test 3");
+				item3.separatorBefore = true;
+				item.separatorAfter = true;
+				contextMenu.customItems.push(item);
+				contextMenu.customItems.push(item1);
+				contextMenu.customItems.push(item2);
+				contextMenu.customItems.push(item3);
+				contextMenu.build();
+
+				
+			}
+
+			function onClick(event) {
+				var win = window.open("http://toolkitjs.blogspot.co.uk", '_blank');
+				win.focus();
+			}
+		</script>
+	</head>
+	<body onload="onLoad()">
+
+	</body>
+</html>
