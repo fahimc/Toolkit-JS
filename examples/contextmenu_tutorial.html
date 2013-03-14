@@ -5,7 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
-		<script type="text/javascript" src="../release/toolkitMax-v1004.js"></script>
+		<script type="text/javascript" src="../release/archive/toolkitMax-v1004.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/ui/ContextMenu.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/ui/ContextMenuItem.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
@@ -37,6 +37,7 @@
 			function onLoad() {
 
 				var contextMenu = new ContextMenu();
+				contextMenu.disableF12(true);
 				var item = new ContextMenuItem("ToolkitJS", onClick);
 				var item1 = new ContextMenuItem("Test 1");
 				var item2 = new ContextMenuItem("Test 2");
