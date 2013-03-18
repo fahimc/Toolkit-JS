@@ -6,19 +6,7 @@
 		<title>test</title>
 		<meta name="author" content="Fahim" />
 		<script type="text/javascript" src="../release/archive/toolkitMax-v1004.js"></script>
-		<!-- <script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
-		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
-		<script type="text/javascript" src="../lib/com/greensock/TweenLite.js"></script>
-		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
-		<script type="text/javascript" src="../lib/com/utensil/UtensilLight.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/event/Event.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/Layout.js"></script>
-		<script type="text/javascript" src="../src/com/decorator/GridLayout.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/ScrollLayout.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/display/DisplayObject.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/UIElement.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/MovieClip.js"></script><!--  -->
-		<script type="text/javascript" src="lib/fahimchowdhury/toolkit/test/View.js"></script><!--  -->
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/mvc/Model.js"></script>
 		<!-- Date: 2012-08-28 -->
 		<style>
 			* {
@@ -43,45 +31,51 @@
 		</style>
 		<script type="text/javascript">
 			function onLoad() {
-				var IModel = {
-					set : function(name,value) {
-					},
-					get:function(name){
+				
+				
+				
+				var View = function()
+				{
+					this.div;
+					this.build = function()
+					{
+						this.div = document.createElement("div");
+						document.body.appendChild(this.div);
 						
-					},
-					remove:function(name)
-					{
-						
 					}
-				}
-				var Model =function(){
-					this.set=function(name,value)
+					this.setTitle=function(value)
 					{
-						this[name]=value;
-					}
-					this.get=function(name)
-					{
-						if(this[name])
-						{
-							return this[name];
-						}
-						return null;
-					}
-					this.remove=function(name)
-					{
-						if(this[name])
-						delete this[name];
+						this.div.innerHTML += value+"<br>";
 					}
 				};
-				Class.implement(Model,IModel);
+				
+				var Controller = function()
+				{
+					this.model;
+					this.view;
+					this.init = function()
+					{
+						this.view.build();
+						
+						var root= this;
+						
+						Utensil.addListener(document,"click",function(event){root.onClick(event);});
+					}
+					this.onClick = function(event)
+					{
+						var title = this.model.get("title");
+						this.view.setTitle(title);
+					}
+				};
 				
 				var model = new Model();
 				model.set("title","hello world");
-				console.log(model.get('title'));
-				console.log(model);
-				model.remove('title');
-				console.log(model);
 				
+				var view = new View();
+				var controller = new Controller();
+				controller.model = model;
+				controller.view = view;
+				controller.init();
 			}
 
 		</script>
