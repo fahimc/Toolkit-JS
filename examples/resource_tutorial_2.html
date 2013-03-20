@@ -6,7 +6,7 @@
 		<title>test</title>
 		<meta name="author" content="Fahim" />
 		<script type="text/javascript" src="../release/archive/toolkitMax-v1004.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/mvc/Model.js"></script>
+		<!-- <script type="text/javascript" src="../lib/com/fahimchowdhury/util/manager/ResourceManager.js"></script> -->
 		<!-- Date: 2012-08-28 -->
 		<style>
 			* {
@@ -32,52 +32,27 @@
 		<script type="text/javascript">
 			function onLoad() {
 				
+				var rand = new Date().getTime();
 				
-
-var View = function()
-{
-	this.div;
-	this.build = function()
-	{
-		this.div = document.createElement("div");
-		document.body.appendChild(this.div);
-		
-	}
-	this.setTitle=function(value)
-	{
-		this.div.innerHTML += value+"<br>";
-	}
-};
-				
-var Controller = function()
-{
-	this.model;
-	this.view;
-	this.init = function()
-	{
-		this.view.build();
-		
-		var root= this;
-		
-		Utensil.addListener(document,"click",function(event){root.onClick(event);});
-	}
-	this.onClick = function(event)
-	{
-		var title = this.model.get("title");
-		this.view.setTitle(title);
-	}
-};
-				
-var model = new Model();
-model.set("title","hello world");
-
-var view = new View();
-var controller = new Controller();
-controller.model = model;
-controller.view = view;
-controller.init();
+				ResourceManager.addAssets("resource/data/asset.json?rand="+rand);
+				ResourceManager.addCopy("resource/data/copy.json?rand="+rand);
+				Event.addListener(ResourceManager, Event.COMPLETE, onResourceComplete);
+				ResourceManager.init();
 			}
 
+			function onResourceComplete() {
+				
+				var ship1 = new Image();
+				 ship1.src=ResourceManager.getAssetByName("ship").src;
+				 document.body.appendChild(ship1);
+				 
+				 var ship2 = new Image();
+				 ship2.src=ResourceManager.getAssetByName("ship").src;
+				 document.body.appendChild(ship2);
+				 
+				console.log("title:",ResourceManager.getCopyByID('title'));
+				console.log("ship:",ResourceManager.getAssetByName("ship"));
+			}
 		</script>
 	</head>
 	<body onload="onLoad()">
