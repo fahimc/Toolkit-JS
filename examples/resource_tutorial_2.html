@@ -34,25 +34,25 @@
 				
 				var rand = new Date().getTime();
 				
-				ResourceManager.addAssets("resource/data/asset.json?rand="+rand);
-				ResourceManager.addCopy("resource/data/copy.json?rand="+rand);
-				Event.addListener(ResourceManager, Event.COMPLETE, onResourceComplete);
-				ResourceManager.init();
-			}
+		ResourceManager.addAssets("resource/data/asset.json?rand="+rand);
+		ResourceManager.addCopy("resource/data/copy.json?rand="+rand);
+		Event.addListener(ResourceManager, Event.COMPLETE, onResourceComplete);
+		ResourceManager.init();
+	}
 
-			function onResourceComplete() {
-				
-				var ship1 = new Image();
-				 ship1.src=ResourceManager.getAssetByName("ship").src;
-				 document.body.appendChild(ship1);
-				 
-				 var ship2 = new Image();
-				 ship2.src=ResourceManager.getAssetByName("ship").src;
-				 document.body.appendChild(ship2);
-				 
-				console.log("title:",ResourceManager.getCopyByID('title'));
-				console.log("ship:",ResourceManager.getAssetByName("ship"));
-			}
+	function onResourceComplete() {
+		
+		var ship1 = new Image();
+		 ship1.src=ResourceManager.getAssetByName("ship").src;
+		 document.body.appendChild(ship1);
+		 
+		 var ship2 = new Image();
+		 ship2.src=ResourceManager.getAssetByName("ship").src;
+		 document.body.appendChild(ship2);
+		 
+		console.log("title:",ResourceManager.getCopyByID('title'));
+		console.log("ship:",ResourceManager.getAssetByName("ship"));
+	}
 		</script>
 	</head>
 	<body onload="onLoad()">
