@@ -1650,6 +1650,7 @@ var MovieClip = function() {
 
 				var to = mc.TO;
 				var from = mc.FROM;
+				
 				var loop = mc.LOOP;
 				var current = mc.cFrame;
 				current++;
@@ -1674,6 +1675,7 @@ var MovieClip = function() {
 		}
 	};
 	_.setFrame = function(frame, loop,to) {
+		
 		var bgWidth = this.img.width;
 		// var size = eval("(" + obj + ')');
 		// var width = this.getStyle(this.img, "width");
@@ -1686,10 +1688,11 @@ var MovieClip = function() {
 			} else {
 				frame = Math.round(bgWidth / this.width());
 			}
-			left = loop != null ? loop : (bgWidth / this.width() ) * frame;
+			left =  (this.width() * frame);
 		} else {
 
 		}
+		
 		var top = this.getPos().top;
 		this.img.style.top = top + "px";
 		this.img.style.left = "-" + left + "px ";
