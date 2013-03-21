@@ -2558,7 +2558,7 @@ var Model = function() {
 		this[name] = value;
 	}
 	this.get = function(name) {
-		if (this[name]) {
+		if (this[name]!=undefined) {
 			return this[name];
 		}
 		return null;
