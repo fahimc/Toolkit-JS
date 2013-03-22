@@ -47,7 +47,12 @@
 					console.log(item);
 				}
 				iterator=null;
-				//console.log(collection.find("age",28));
+				
+				console.log(collection.find("age",28));
+				
+				collection.purge();
+				
+				console.log(collection);
 			}
 
 		</script>
