@@ -1625,11 +1625,13 @@ var MovieClip = function() {
 		this.LOOP = false;
 	}
 	_.gotoAndStop = function(frame) {
+		this.stop();
 		frame = frame ? frame : 0;
 		this.resetMC();
 		this.setFrame(frame);
 	};
 	_.gotoAndPlay = function(from, to, loop) {
+		this.stop();
 		this.TO = to;
 		this.FROM = from;
 		this.LOOP = loop ? loop : false;
