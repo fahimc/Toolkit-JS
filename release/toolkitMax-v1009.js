@@ -1269,7 +1269,7 @@ DisplayObject.prototype = {
 			obj.style.filter = 'progid:DXImageTransform.Microsoft.Matrix(M11=' + calCos + ', M12=-' + calSin + ',M21=' + calSin + ', M22=' + calCos + ', sizingMethod="auto expand")';
 			//obj.style.filter = "progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
 		}
-		console.log(obj.style["ms-filter"] );
+		
 		if(obj.style["ms-filter"] )obj.style["ms-filter"]  = 'progid:DXImageTransform.Microsoft.Matrix(M11=' + calCos + ', M12=-' + calSin + ',M21=' + calSin + ', M22=' + calCos + ', sizingMethod="auto expand")';
 
 		if (Utensil.Browser.isIE && Utensil.Browser.getInternetExplorerVersion() < 9) {
@@ -1637,13 +1637,13 @@ var MovieClip = function() {
 		this.LOOP = loop ? loop : false;
 		this.setFrame(from);
 		window.clips.push(this);
+		
 		var root = this;
 		if (!window.enterFrameTimer) {
-			this.timer = setInterval(function() {
-				window.onEnterFrame();
-			}, window.frameRate);
+			 window.enterFrameTimer =setInterval(window.onEnterFrame, window.frameRate);
 		}
 	};
+	
 	window.onEnterFrame = function() {
 		for (var a = 0; a < window.clips.length; a++) {
 				var mc = window.clips[a];
