@@ -5,19 +5,16 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
-		 <script type="text/javascript" src="../release/toolkitMax-v1010.js"></script> 
-		<!-- <script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
+		<!-- <script type="text/javascript" src="../release/toolkitMax-v1010.js"></script>-->
+		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/TweenLite.js"></script>
 		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
 		<script type="text/javascript" src="../lib/com/utensil/UtensilLight.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/event/Event.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/Layout.js"></script>
-		<script type="text/javascript" src="../src/com/decorator/GridLayout.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/ScrollLayout.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/display/DisplayObject.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/UIElement.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/MovieClip.js"></script><!--  --> 
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/Label.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/style/StyleSheet.js"></script>
 		<!-- Date: 2012-08-28 -->
 		<style>
 			* {
@@ -30,49 +27,62 @@
 				-ms-user-select: none;
 				user-select: none;
 			}
+			html{
+				width:100%;
+				height:100%;
+			}
 			body {
 				overflow: hidden;
-				background-color: #0791a4;
+				background-color: #e4e4e4;
+				width:100%;
+				height:100%;
 			}
 
-			.test {
-				background-color: #0f0;
+			#stage {
+				background-color: #fff;
+				border: 1px solid #000;
+				width:50%;
+				height:50%;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 100px;
+				overflow: hidden;
 			}
-
+			.label{
+				font-size:3em;
+			}
 		</style>
 		<script type="text/javascript">
-			var test;
-			var children = [];
-			var first = true;
+		var label;
 			function onLoad() {
 
-				var bird = new Image();
-				bird.src = "images/soldier_sprite.png";
+				Utensil.stage(document.getElementById("stage"),true);
 
-				test = new MovieClip();
-				test.width(50);
-				test.height(50);
-				test.build();
-				test.setStyle();
-				test.x(100);
-				test.y(100);
-				
-				document.body.appendChild(test.display);
 
-				test.arrange();
-				test.attach(bird);
-				test.gotoAndPlay(0, 1,true);
-
+				label = new Label();
+				label.build();
+				label.className("label");
+				label.text("Resize the Browser");
+				label.x(100);
+				label.y(100);
+				label.setStyle();
+				Utensil.stage().appendChild(label.display);
+				label.arrange();
+			
+				StyleSheet.autoSizeFont(true);
 
 				Utensil.addListener(window, "resize", onResize);
 			}
 
 			function onResize() {
-
+				Utensil.stage().style.marginTop=(100 * StyleSheet.resizeRatio())+"px";
+				label.x(100 * StyleSheet.resizeRatio());
+				label.y(100 * StyleSheet.resizeRatio());
 			}
 		</script>
+
 	</head>
 	<body onload="onLoad()">
-
+		<div id="stage"></div>
 	</body>
 </html>

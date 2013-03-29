@@ -5,8 +5,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
-		<script type="text/javascript" src="../release/archive/toolkitMax-v1010.js"></script>
-		<!-- <script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
+		<!-- <script type="text/javascript" src="../release/toolkitMax-v1011.js"></script>-->
+		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/TweenLite.js"></script>
 		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
@@ -17,7 +17,7 @@
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/ScrollLayout.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/display/DisplayObject.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/UIElement.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/MovieClip.js"></script><!--  -->
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/MovieClip.js"></script><!--  
 		<!-- Date: 2012-08-28 -->
 		<style>
 			* {
@@ -58,7 +58,11 @@
 				var bird = new Image();
 				bird.src = "images/soldier_sprite.png";
 
-				test = new MovieClip();
+				test = new UIElement();
+				test.layout(new PaddedLayout());
+				test.layout().left=30;
+				test.layout(new VerticalLayout());
+				test.layout().verticalGap=10;
 				test.width(50);
 				test.height(50);
 				test.build();
@@ -67,11 +71,12 @@
 				test.y(200);
 
 				Utensil.stage().appendChild(test.display);
-
-				test.arrange();
-				test.attach(bird);
-				test.gotoAndPlay(0, 1, true);
-
+				
+				console.log( test.layout().verticalGap);
+				console.log( test.layoutCollection);
+				console.log( test.removeLayout(PaddedLayout));
+				console.log( test.layoutCollection);
+				
 				Utensil.addListener(window, "resize", onResize);
 			}
 
