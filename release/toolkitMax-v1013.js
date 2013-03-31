@@ -1404,7 +1404,7 @@ var Sprite = function() {
 	 * public functions
 	 */
 	_.isGradient = false;
-	_.htcURL ="lib/com/fahimchowdhury/border-radius.htc";
+	_.htcURL ="lib/com/fahimchowdhury/PIE.htc";
 	_.lineStyle=function(thickness,color)
 	{
 		var t=thickness!=undefined?thickness:1;
