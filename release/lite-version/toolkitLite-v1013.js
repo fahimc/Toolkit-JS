@@ -1040,7 +1040,7 @@ var Label = function() {
 	};
 	_.setCorners=function(rad)
 	{
-		this.display.style.behavior= 'url('+htcURL+')';
+		this.display.style.behavior= 'url('+this.htcURL+')';
 		this.display.style.webkitBorderRadius = rad+"px";
 		this.display.style.MozBorderRadius = rad+"px";
 		this.display.style['-moz-border-radius']=rad+"px";
