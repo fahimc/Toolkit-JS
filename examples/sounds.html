@@ -5,8 +5,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>test</title>
 		<meta name="author" content="Fahim" />
-		 <script type="text/javascript" src="../release/lite-version/toolkitLite-v1013.js"></script> 
-		<!-- <script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
+		<!-- <script type="text/javascript" src="../release/archive/toolkitMax-v1010.js"></script> -->
+		<script type="text/javascript" src="../lib/com/greensock/easing/EasePack.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/plugins/CSSPlugin.js"></script>
 		<script type="text/javascript" src="../lib/com/greensock/TweenLite.js"></script>
 		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
@@ -17,7 +17,8 @@
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/decorator/ScrollLayout.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/display/DisplayObject.js"></script>
 		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/UIElement.js"></script>
-		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/MovieClip.js"></script><!--  --> 
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/component/MovieClip.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/media/Sound.js"></script>
 		<!-- Date: 2012-08-28 -->
 		<style>
 			* {
@@ -32,48 +33,62 @@
 			}
 			body {
 				overflow: hidden;
-				background-color: #0791a4;
+				background-color: #e4e4e4;
 			}
 
-			.test {
-				background-color: #0f0;
+			#stage {
+				background-color: #fff;
+				border: 1px solid #000;
+				width:500px;
+				height:400px;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 100px;
+				overflow: hidden;
 			}
 
 		</style>
 		<script type="text/javascript">
-			var test;
-			var children = [];
-			var first = true;
+			var sound;
 			function onLoad() {
 
-				var bird = new Image();
-				bird.src = "images/soldier_sprite.png";
-
-				test = new MovieClip();
-				test.width(50);
-				test.height(50);
-				test.build();
-				test.setStyle();
-				test.x(100);
-				test.y(100);
-				
-				document.body.appendChild(test.display);
-
-				test.arrange();
-				test.attach(bird);
-				test.gotoAndPlay(0, 1,true);
+				sound = new Sound();
+				sound.load("resource/media/1.wav","resource/media/1.mp3");
 				
 				
-
 				Utensil.addListener(window, "resize", onResize);
 			}
-
+			function onPlay()
+			{
+				sound.play();
+			}
+			function onStop()
+			{
+				sound.stop();
+			}
+			function onPause()
+			{
+				sound.pause();
+			}
+			function onVolDown()
+			{
+				sound.volume(sound.volume()-0.1);
+			}
+			function onVolUp()
+			{
+				sound.volume(sound.volume()+0.1);
+			}
 			function onResize() {
 
 			}
 		</script>
+
 	</head>
 	<body onload="onLoad()">
-
+		<button onclick="onPlay()">play</button>
+		<button onclick="onStop()">stop</button>
+		<button onclick="onPause()">pause</button>
+		<button onclick="onVolDown()">volume down</button>
+		<button onclick="onVolUp()">volume up</button>
 	</body>
 </html>
