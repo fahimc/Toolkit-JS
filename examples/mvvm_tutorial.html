@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>test</title>
+		<meta name="author" content="Fahim" />
+		<script type="text/javascript" src="../release/archive/toolkitMax-v1014.js"></script>
+		<script type="text/javascript" src="../lib/com/fahimchowdhury/mvc/Model.js"></script>
+		<script type="text/javascript" src="../lib/com/utensil/JSInterface.js"></script>
+		<!-- Date: 2012-08-28 -->
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			body {
+				overflow: hidden;
+				background-color: #0791a4;
+			}
+
+			.test {
+				background-color: #0f0;
+			}
+
+		</style>
+		<script type="text/javascript">
+		
+			function onLoad() {
+				
+				var View = function() {
+					this.div
+					this.build = function() {
+						this.div = document.createElement("div");
+						document.body.appendChild(this.div);
+
+					}
+					this.setTitle = function(value) {
+						
+						this.div.innerHTML += value+"<br>";
+					}
+				};
+
+				var Controller = function() {
+					this.model;
+					this.viewModel;
+					this.view;
+					this.init = function() {
+						this.view.build();
+						
+						var root = this;
+
+						Utensil.addListener(document, "click", function(event) {
+							root.onClick(event);
+						});
+					}
+					this.onClick = function(event) {
+						
+						this.viewModel.set("subtitle",this.viewModel.get("subtitle")+ "<br>sub title");
+					}
+				};
+
+				var model = new Model();
+				model.set("title", "hello world");
+
+				
+				
+
+				var viewModel = new ViewModel(
+					{
+						title:"viewModel Test",
+						subtitle:"sub title test"
+					}
+				);
+				console.log(viewModel);
+				var view = new View();
+				var controller = new Controller();
+				controller.model = model;
+				controller.view = view;
+				controller.viewModel =viewModel;
+				controller.init();
+
+			}
+
+		</script>
+	</head>
+	<body onload="onLoad()">
+	
+		<p id="title">
+			
+		</p>
+		<p id="subtitle">
+			
+		</p>
+	</body>
+</html>
