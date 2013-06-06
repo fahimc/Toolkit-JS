@@ -74,7 +74,7 @@ var View2 = function() {
 		sprite3.height(100);
 		sprite3.visible(true);
 		sprite3.buttonMode(true);
-
+	
 		this.addChild(sprite3);
 		
 		
