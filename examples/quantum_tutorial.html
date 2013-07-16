@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>test</title>
+		<meta name="author" content="Fahim" />
+		<script type="text/javascript" src="../release/archive/toolkitMax-v1004.js"></script>
+		<script type="text/javascript" src="lib/fahimchowdhury/toolkit/test/QuantumButton.js"></script>
+		<!-- <script type="text/javascript" src="../lib/com/fahimchowdhury/util/manager/ResourceManager.js"></script> -->
+		<!-- Date: 2012-08-28 -->
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			body {
+				overflow: hidden;
+				background-color: #0791a4;
+			}
+
+			.view {
+				width:500px;
+				height:500px;
+			}
+			.hide{
+				display: none;
+			}
+			.show{
+				display: block;
+			}
+			#view1
+			{
+				background-color: #0f0;
+			}
+			#view1 .button
+			{
+				width:100px;
+				height:100px;
+				background-color: #f00;
+			}
+			.button p,.button2 p,.button3 p
+			{
+				padding: 20px;
+				color:#fff;
+				text-align: center;
+			}
+			#view2
+			{
+				background-color: #00f;
+			}
+			.button2
+			{
+				width:80px;
+				height:250px;
+				background-color: #f00;
+			}
+			.button3
+			{
+				width:150px;
+				height:150px;
+				background-color: #0f0;
+			}
+			#view3
+			{
+				background-color: #00f;
+			}
+		</style>
+		<script type="text/javascript">
+		var currentView =1;
+			function onLoad() {
+				
+				QuantumButton.currentObserverId="view1";
+				QuantumButton.registerObserver("view1");
+				QuantumButton.registerObserver("view2");
+				QuantumButton.registerObserver("view3");
+				QuantumButton.create();
+				QuantumButton.updateData("className","button");
+				QuantumButton.updateData("text","button in view 1");
+				QuantumButton.onQuantumChange("view1");
+			}
+			function onChange()
+			{
+				document.getElementById("view"+currentView).className+=" hide";
+				switch(currentView)
+				{
+					case 1:
+					currentView=2;
+					break;
+					case 2:
+					currentView=3;
+					break;
+					case 3:
+					currentView=1;
+					break;
+				}
+				document.getElementById("view"+currentView).className=document.getElementById("view"+currentView).className.replace(" hide","");
+				QuantumButton.onQuantumChange("view"+currentView);
+				switch(currentView)
+				{
+					case 2:
+					QuantumButton.updateData("className","button2");
+					QuantumButton.updateData("x",100);
+					QuantumButton.updateData("y",100);
+					QuantumButton.updateData("text","button in view 2");
+					break;
+					case 3:
+					QuantumButton.updateData("className","button3");
+					QuantumButton.updateData("x",100);
+					QuantumButton.updateData("y",100);
+					QuantumButton.updateData("text","button in view 3");
+					break;
+					case 3:
+					break;
+				}
+			}
+
+			
+		</script>
+	</head>
+	<body onload="onLoad()">
+		<div id="view1" class="view"></div>
+		<div id="view2"  class="view hide"></div>
+		<div id="view3"  class="view hide"></div>
+		<button id="changeView" onclick="onChange()">change view</button>
+	</body>
+</html>
