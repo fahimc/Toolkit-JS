@@ -52,12 +52,20 @@
 			}
 
 			function onComplete(t, x) {
-				text += t;
+				t = t.trim();
+				if (t.length>0) {
+					console.log(t.charAt(t.length - 1));
+					if (t.charAt(t.length - 1) != ";") {
+					
+						t += ";";
+					}
+					text += t;
+				}
 				index++;
-				if(index < scripts.length) {
+				if (index < scripts.length) {
 					next();
 				} else {
-					console.log(index);
+					
 					document.getElementById("output").value = text;
 				}
 			}
