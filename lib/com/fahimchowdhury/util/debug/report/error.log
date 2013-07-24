@@ -1,0 +1,4 @@
+2013-07-23 23:00:58 ERROR: Chrome,29.0.1547.22 Uncaught TypeError: Cannot call method 'init' of undefined ON LINE 43 FOR debug/error-report.php
+2013-07-23 23:02:22 ERROR: Chrome,29.0.1547.22 Uncaught TypeError: Cannot call method 'init' of undefined ON LINE 43 FOR debug/error-report.php
+2013-07-23 23:03:10 ERROR: Chrome,29.0.1547.22, Uncaught TypeError: Cannot call method 'init' of undefined ON LINE 43 FOR debug/error-report.php
+2013-07-24 16:54:38 ERROR: Chrome,28.0.1500.72, Uncaught TypeError: Cannot call method 'init' of undefined ON LINE 43 FOR http://localhost/Toolkit-JS/examples/debugger_tutorial.html

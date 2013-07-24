@@ -35,11 +35,11 @@
 			function onLoad() {
 				
 				
-				Debug.show=false;
+				Debug.show=true;
 				Debug.ERROR_REPORT_URL="debug/error-report.php";
 				Debug.report=true;
-				
-				var debugTest = DebugTest();
+				Debug.loadTime();
+				var debugTest = new DebugTest();
 				debugTest.init();
 				console.log("here");
 				document.body.innerHTML="done";
