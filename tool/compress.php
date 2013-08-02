@@ -15,8 +15,8 @@ Class Compress
 	{
 		$this->hasNext($this->currentIndex);
 		$this->getVersion();
-		$this->createUncompressed();
-		$this->updateVersion();
+		//$this->createUncompressed();
+	//	$this->updateVersion();
 	}
 	public function addToIgnoreFile($val)
 	{
@@ -67,6 +67,10 @@ Class Compress
 					if(!$exclude){
 						$copy = trim(file_get_contents($src . '/' . $file));
 						if(substr($copy,-1)=="}")$copy.=";";
+						
+						
+						$this->checkDependancies($copy);
+						
 						$this->data .=$copy;
 						//copy($src . '/' . $file, $dst . '/' . $file);
 					echo "<p class='" . ("file") . "'>" . ($file) . "</p>";
@@ -76,6 +80,29 @@ Class Compress
 		}
 		closedir($dir);
 		return true;
+	}
+	private function checkDependancies($data)
+	{
+		$allMatches=array();
+		$regex = '#Class.extend\((([^()]+|(?R))*)\)#';
+		if (preg_match_all($regex, $data ,$allMatches)) {
+			$arr=explode(",", $matches[1]);
+		   $matches[1] = $arr[1];
+		} else {
+		    //no parenthesis
+		  //  echo $string;
+		}
+		$allMatches = $allMatches;
+		$regex = '#Class.implement\((([^()]+|(?R))*)\)#';
+		if (preg_match_all($regex, $data ,$matches)) {
+		  $arr=explode(",", $matches[1]);
+		   $matches[1] = $arr[1];
+		} else {
+		    //no parenthesis
+		  //  echo $string;
+		}
+		$allMatches=array_merge($allMatches,$matches);
+		var_dump($allMatches);
 	}
 	private function getVersion()
 	{
