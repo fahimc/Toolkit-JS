@@ -73,7 +73,7 @@ Class Compress
 						
 						$this->data .=$copy;
 						//copy($src . '/' . $file, $dst . '/' . $file);
-					echo "<p class='" . ("file") . "'>" . ($file) . "</p>";
+					// echo "<p class='" . ("file") . "'>" . ($file) . "</p>";
 					}
 				}
 			}
@@ -84,25 +84,34 @@ Class Compress
 	private function checkDependancies($data)
 	{
 		$allMatches=array();
+		
+		$item = new DependancyItem();
+		$item->data=$data;
 		$regex = '#Class.extend\((([^()]+|(?R))*)\)#';
-		if (preg_match_all($regex, $data ,$allMatches)) {
-			$arr=explode(",", $matches[1]);
-		   $matches[1] = $arr[1];
-		} else {
-		    //no parenthesis
-		  //  echo $string;
-		}
-		$allMatches = $allMatches;
+		if (preg_match_all($regex, $data ,$matches)) {
+			for($a=0;$a<count($matches);$a++)
+			{
+				$arr=explode(",", $matches[$a][0]);
+				if(!$item->className)$item->className =  str_replace("Class.extend(","",$arr[0]);
+				$arr[1]=str_replace(")","",$arr[1]);
+				$item->dependancies[$arr[1]]=$arr[1];
+				 //array_push($item->dependancies,str_replace(")","",$arr[1]));
+			}
+		} 
+		
 		$regex = '#Class.implement\((([^()]+|(?R))*)\)#';
 		if (preg_match_all($regex, $data ,$matches)) {
-		  $arr=explode(",", $matches[1]);
-		   $matches[1] = $arr[1];
-		} else {
-		    //no parenthesis
-		  //  echo $string;
-		}
-		$allMatches=array_merge($allMatches,$matches);
-		var_dump($allMatches);
+		 for($a=0;$a<count($matches);$a++)
+			{
+				$arr=explode(",", $matches[$a][0]);
+				if(!$item->className)$item->className =  str_replace("Class.implement(","",$arr[0]);
+				$arr[1]=str_replace(")","",$arr[1]);
+				$item->dependancies[$arr[1]]=$arr[1];
+				// array_push($item->dependancies,str_replace(")","",$arr[1]));
+			}
+		} 
+		
+		if(count($item->dependancies)>0)var_dump($item);
 	}
 	private function getVersion()
 	{
@@ -120,4 +129,10 @@ Class Compress
 	}
 }
 
+Class DependancyItem
+{
+	public $className=null;
+	public $dependancies=array();
+	public $data = null;
+}
 ?>
