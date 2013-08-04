@@ -102,12 +102,14 @@ $compress = new Compress();
 $compress->addFolder("../lib/com/utensil/");
 $compress->addFolder("../lib/com/fahimchowdhury/");
 $compress->releaseURL="../release/";
+$compress->archiveURL="../release/archive/";
 $compress->releasePrefix="toolkitMax-v";
 $compress->addToIgnoreFile("PIE.js");
 $compress->addToIgnoreFile("TouchController.js");
 $compress->addToIgnoreFile("DebugTest.js");
 $compress->addToIgnoreFolder("report");
 $compress->addToIgnoreFolder("media");
+$compress->addToIgnoreFolder("game");
 $compress->init();
 
 
