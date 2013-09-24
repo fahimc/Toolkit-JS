@@ -9,7 +9,7 @@ Class Compress {
 	private $ignore_files = array();
 	public $data = "";
 	public $version = 0;
-	public $versionIncrement = 0.1;
+	public $versionIncrement = 1;
 	private $currentIndex = 0;
 	private $itemCollection = array();
 	private $nonDependantIndex=0;
@@ -129,7 +129,7 @@ Class Compress {
 
 	private function getVersion() {
 		$this -> version = floatval(file_get_contents(Compress::versionURL));
-		$this -> version = $this -> version + $this -> versionIncrement;
+		$this -> version = str_replace(".","",$this -> version + $this -> versionIncrement);
 	}
 
 	private function createUncompressed() {
@@ -137,7 +137,7 @@ Class Compress {
 		
 			$this -> data.=$this -> itemCollection[$a]->data;
 		}
-		file_put_contents($this -> releaseURL . $this -> releasePrefix . $this -> version . ".js", $this -> data);
+		file_put_contents($this -> releaseURL . $this -> releasePrefix . str_replace(".","",$this -> version) . ".js", $this -> data);
 
 	}
 
